@@ -1,0 +1,27 @@
+<h1 class="text-3xl mb-4">Empleados</h1>
+<a href="/admin/employees/add" class="btn-primary">Agregar Empleado</a>
+<table class="min-w-full mt-6">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Puesto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each empleados}}
+        <tr>
+            <td>{{nombre}}</td>
+            <td>{{apellido}}</td>
+            <td>{{email}}</td>
+            <td>{{puesto}}</td>
+            <td>
+                <a href="/admin/employees/edit/{{id}}" class="btn-accent">Editar</a>
+                <a href="/admin/employees/delete/{{id}}" class="btn-primary">Eliminar</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

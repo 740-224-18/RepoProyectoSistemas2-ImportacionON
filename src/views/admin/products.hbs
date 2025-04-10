@@ -1,0 +1,25 @@
+<h1 class="text-3xl mb-4">Productos</h1>
+<a href="/admin/products/add" class="btn-primary">Agregar Producto</a>
+<table class="min-w-full mt-6">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each productos}}
+        <tr>
+            <td>{{nombre}}</td>
+            <td>{{descripcion}}</td>
+            <td>{{precio}}</td>
+            <td>
+                <a href="/admin/products/edit/{{id}}" class="btn-accent">Editar</a>
+                <a href="/admin/products/delete/{{id}}" class="btn-primary">Eliminar</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
