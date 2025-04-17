@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 const multer = require('multer');
 const path = require('path');
 
@@ -29,5 +30,16 @@ router.post('/add', upload.single('foto'), saveEmployee);
 router.get('/edit/:id', showEditForm);
 router.post('/edit/:id', upload.single('foto'), updateEmployee);
 router.get('/delete/:id', deleteEmployee);
+=======
+const adminController = require('../controllers/adminController');
+
+// Rutas para empleados
+router.get('/employees', adminController.listEmployees);        // Ver empleados
+router.get('/employees/add', adminController.addEmployeeForm);  // Formulario de agregar empleado
+router.post('/employees', adminController.addEmployee);         // Agregar empleado
+router.get('/employees/edit/:id', adminController.editEmployeeForm); // Formulario para editar empleado
+router.post('/employees/edit/:id', adminController.updateEmployee); // Actualizar empleado
+router.get('/employees/delete/:id', adminController.deleteEmployee); // Eliminar empleado
+>>>>>>> 3de343236cd97367c1a8f3700a9bbf5057c3a113
 
 module.exports = router;
