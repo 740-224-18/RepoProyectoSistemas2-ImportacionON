@@ -1,136 +1,126 @@
 const path = require('path');
 const fs = require('fs');
 
-// Listar empleados
-function listEmployees(req, res) {
+function listProducts(req, res) {
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM empleados', (err, empleados) => {
-      if (err) return res.status(500).send('Error al listar empleados');
-
-      res.render('admin/employees/employees', {
-        empleados,
-        active: { empleados: true },
+    conn.query('SELECT * FROM productos', (err, productos) => {
+      if (err) return res.status(500).send('Error al listar productos');
+      res.render('admin/products/products', {
+        productos,
+        active: { productos: true },
         nombre: req.session.nombre
       });
     });
   });
 }
 
-// Mostrar formulario para agregar empleado
 function showAddForm(req, res) {
-  res.render('admin/employees/add', {
-    active: { empleados: true },
+  res.render('admin/products/add', {
+    active: { productos: true },
     nombre: req.session.nombre
   });
 }
 
-// Guardar nuevo empleado
-function saveEmployee(req, res) {
+function saveProduct(req, res) {
   const data = req.body;
   const file = req.file;
 
-  const empleado = {
+  const producto = {
     nombre: data.nombre,
-    apellido: data.apellido,
-    correo: data.correo,
-    telefono: data.telefono,
-    rol: data.rol,
-    foto: file ? file.filename : null
+    descripcion: data.descripcion,
+    precio: data.precio,
+    stock: data.stock,
+    categoria: data.categoria,
+    imagen: file ? file.filename : null
   };
 
   req.getConnection((err, conn) => {
-    conn.query('INSERT INTO empleados SET ?', empleado, (err) => {
-        if (err) {
-            console.error('ERROR MYSQL AL GUARDAR:', err); // <-- importante
-            return res.status(500).send('Error al guardar empleado');
-        }        
-      res.redirect('/admin/employees');
+    conn.query('INSERT INTO productos SET ?', producto, (err) => {
+      if (err) {
+        console.error('ERROR MYSQL AL GUARDAR PRODUCTO:', err);
+        return res.render('admin/products/add', {
+          error: 'Ocurrió un error al guardar el producto.',
+          formData: producto,
+          active: { productos: true },
+          nombre: req.session.nombre
+        });
+      }
+      res.redirect('/admin/products');
     });
   });
 }
 
-// Mostrar formulario para editar empleado
 function showEditForm(req, res) {
   const id = req.params.id;
-
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM empleados WHERE id = ?', [id], (err, rows) => {
-      if (err || rows.length === 0) return res.status(404).send('Empleado no encontrado');
-
-      res.render('admin/employees/edit', {
-        empleado: rows[0],
-        active: { empleados: true },
+    conn.query('SELECT * FROM productos WHERE id = ?', [id], (err, rows) => {
+      if (err || rows.length === 0) return res.status(404).send('Producto no encontrado');
+      res.render('admin/products/edit', {
+        producto: rows[0],
+        active: { productos: true },
         nombre: req.session.nombre
       });
     });
   });
 }
 
-// Actualizar empleado
-function updateEmployee(req, res) {
+function updateProduct(req, res) {
   const id = req.params.id;
   const data = req.body;
   const file = req.file;
 
   req.getConnection((err, conn) => {
-    conn.query('SELECT foto FROM empleados WHERE id = ?', [id], (err, rows) => {
-      const oldFoto = rows[0]?.foto;
+    conn.query('SELECT imagen FROM productos WHERE id = ?', [id], (err, rows) => {
+      const oldImage = rows[0]?.imagen;
 
-      const empleado = {
+      const producto = {
         nombre: data.nombre,
-        apellido: data.apellido,
-        correo: data.correo,
-        telefono: data.telefono,
-        rol: data.rol
+        descripcion: data.descripcion,
+        precio: data.precio,
+        stock: data.stock,
+        categoria: data.categoria
       };
 
       if (file) {
-        empleado.foto = file.filename;
+        producto.imagen = file.filename;
       
-        // Eliminar imagen anterior si existe
-        if (oldFoto) {
-          const filePath = path.join(__dirname, '..', 'public', 'image', 'employees', oldFoto);
+        if (oldImage) {
+          const filePath = path.join(__dirname, '..', 'public', 'image', 'products', oldImage);
           if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
         }
       }
       
 
-      conn.query('UPDATE empleados SET ? WHERE id = ?', [empleado, id], (err) => {
-        if (err) return res.status(500).send('Error al actualizar empleado');
-        res.redirect('/admin/employees');
+      conn.query('UPDATE productos SET ? WHERE id = ?', [producto, id], (err) => {
+        if (err) return res.status(500).send('Error al actualizar producto');
+        res.redirect('/admin/products');
       });
     });
   });
 }
 
-// Eliminar empleado
-function deleteEmployee(req, res) {
+function deleteProduct(req, res) {
   const id = req.params.id;
-
   req.getConnection((err, conn) => {
-    conn.query('SELECT foto FROM empleados WHERE id = ?', [id], (err, rows) => {
-      const foto = rows[0]?.foto;
-
-      conn.query('DELETE FROM empleados WHERE id = ?', [id], (err) => {
-        if (err) return res.status(500).send('Error al eliminar');
-
-        if (foto) {
-            const filePath = path.join(__dirname, '..', 'public', 'image', 'employees', foto);
+    conn.query('SELECT imagen FROM productos WHERE id = ?', [id], (err, rows) => {
+      const imagen = rows[0]?.imagen;
+      conn.query('DELETE FROM productos WHERE id = ?', [id], (err) => {
+        if (imagen) {
+            const filePath = path.join(__dirname, '..', 'public', 'image', 'products', imagen);
             if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
           }
           
-
-        res.redirect('/admin/employees');
+        res.redirect('/admin/products');
       });
     });
   });
 }
 
 module.exports = {
-  listEmployees,
+  listProducts,
   showAddForm,
-  saveEmployee,
+  saveProduct,
   showEditForm,
-  updateEmployee,
-  deleteEmployee
+  updateProduct,
+  deleteProduct
 };
