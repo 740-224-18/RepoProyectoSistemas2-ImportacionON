@@ -52,7 +52,7 @@ function storeUser(req, res) {
                 res.render('auth/register', { error: 'El usuario ya existe, cambie otro porfavor' });
             } else {
                 bcrypt.hash(data.password, 12).then(hash => {
-                    // Crear objeto solo con los campos que necesita la tabla
+
                     const userToInsert = {
                         nombre: data.nombre,
                         apellido: data.apellido,
