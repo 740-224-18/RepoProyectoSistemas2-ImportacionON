@@ -1,0 +1,45 @@
+{{!< ../layouts/main}}
+<div class="p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Productos</h2>
+    <a href="/admin/products/add" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+      <i class="fas fa-plus-circle mr-1"></i> Agregar Producto
+    </a>
+  </div>
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+        <tr>
+          <th class="py-3 px-4">Imagen</th>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Categoría</th>
+          <th class="py-3 px-4">Precio</th>
+          <th class="py-3 px-4">Stock</th>
+          <th class="py-3 px-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700">
+        {{#each productos}}
+        <tr class="border-t">
+          <td class="py-2 px-4">
+            {{#if imagen}}
+              <img src="/images/products/{{imagen}}" alt="producto" class="w-10 h-10 rounded object-cover">
+
+            {{else}}
+              <span class="text-gray-400 italic">Sin imagen</span>
+            {{/if}}
+          </td>
+          <td class="py-2 px-4">{{nombre}}</td>
+          <td class="py-2 px-4">{{categoria}}</td>
+          <td class="py-2 px-4">${{precio}}</td>
+          <td class="py-2 px-4">{{stock}}</td>
+          <td class="py-2 px-4 space-x-2">
+            <a href="/admin/products/edit/{{id}}" class="text-blue-600 hover:underline"><i class="fas fa-edit"></i></a>
+            <a href="/admin/products/delete/{{id}}" class="text-red-600 hover:underline" onclick="return confirm('¿Eliminar producto?')"><i class="fas fa-trash-alt"></i></a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

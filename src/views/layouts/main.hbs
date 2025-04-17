@@ -1,26 +1,151 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ImportadoraON - {{title}}</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>{{#if title}}{{title}}{{else}}ImportadoraON{{/if}}</title>
+    
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="/css/styles.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --azul-oscuro: #0A1122;
+            --azul-marino: #0F172A;
+            --plomo-oscuro: #333333;
+            --oro: #FFD700;
+            --oro-claro: #FFAA00;
+            --blanco-oscuro: #E8E8E8;
+            --texto-claro: #F6F6F6;
+            --rojo: #b90504;
+            --rojo-oscuro: #990100;
+        }
+        
+        body {
+            background-color: var(--rojo-oscuro);
+            color: var(--texto-claro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .nav-link-gold {
+            border: 2px solid var(--oro);
+            color: var(--oro);
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link-gold:hover {
+            background-color: var(--oro);
+            color: var(--azul-marino);
+            transform: translateY(-1px);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(to right, var(--oro), var(--oro-claro));
+            color: var(--azul-marino);
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-gold:hover {
+            background: linear-gradient(to right, var(--oro-claro), var(--oro));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-red {
+            background: linear-gradient(to right, var(--rojo), var(--rojo-oscuro));
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-red:hover {
+            background: linear-gradient(to right, var(--rojo-oscuro), var(--rojo));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(209, 0, 0, 0.2);
+        }
+        
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: white;
+            -webkit-box-shadow: 0 0 0px 1000px var(--azul-oscuro) inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .shadow-gold {
+            box-shadow: 0 4px 6px rgba(255, 215, 0, 0.1);
+        }
+
+        .border-gold {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        .welcome-animation {
+            animation: fadeOut 0.5s ease-out 3s forwards;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    {{> header}}
+<body class="bg-[#0A1122] text-[#F8FAFC]">
+    <!-- Barra de navegación -->
+    <nav class="flex py-4 bg-[#0F172A] text-white px-6 md:px-12 lg:px-24 border-b border-[#FFD700]/20 shadow-md">
+        <div class="w-1/2 px-4 md:px-8 flex items-center">
+            <a href="/" class="flex items-center hover:opacity-80 transition-smooth">
+                <div class="bg-[#FFD700] p-2 rounded-full mr-3 shadow-gold">
+                    <i class="fas fa-box-open text-lg text-[#0F172A]"></i>
+                </div>
+                <h1 class="text-2xl font-bold">
+                    <span class="text-[#FFD700]">IMPORTADORA</span> 
+                    <span class="text-white">O-N</span>
+                </h1>
+            </a>
+        </div>
+
+        <ul class="w-1/2 px-4 md:px-8 flex justify-end items-center space-x-2 md:space-x-4">
+            {{#if nombre}}
+            <li class="flex items-center space-x-4">
+                <span class="text-[#FFD700] font-medium flex items-center">
+                    <i class="fas fa-user-circle mr-2"></i>
+                    {{nombre}}
+                </span>
+                <a href="/logout" class="nav-link-gold px-3 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Salir
+                </a>
+            </li>
+            {{else}}
+            <li>
+                <a href="/login" class="nav-link-gold px-3 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Ingresar
+                </a>
+            </li>
+            <li class="ml-2">
+                <a href="/register" class="btn-gold px-4 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
+                    <i class="fas fa-user-plus mr-2"></i> Registro
+                </a>
+            </li>
+            {{/if}}
+        </ul>
+    </nav>
 
     {{#if showWelcome}}
         {{> welcome-message nombre=user.nombre}}
     {{/if}}
-
-    <main class="min-h-screen">
+    <!-- Contenido principal -->
+    <main class="flex-grow">
         {{{body}}}
     </main>
 
-    {{> footer}}
+    <script src="/js/main.js">
 
-    <script src="/js/main.js"></script>
+        
+    </script>
 </body>
 </html>

@@ -1,0 +1,45 @@
+{{!< ../layouts/main}}
+<div class="p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Empleados</h2>
+    <a href="/admin/employees/add" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+      <i class="fas fa-plus-circle mr-1"></i> Agregar Nuevo
+    </a>
+  </div>
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+        <tr>
+          <th class="py-3 px-4">Foto</th>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Correo</th>
+          <th class="py-3 px-4">Teléfono</th>
+          <th class="py-3 px-4">Rol</th>
+          <th class="py-3 px-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700">
+        {{#each empleados}}
+        <tr class="border-t">
+          <td class="py-2 px-4">
+            {{#if foto}}
+              <img src="/images/employees/{{foto}}" alt="foto" class="w-10 h-10 rounded-full object-cover">
+
+            {{else}}
+              <span class="text-gray-400 italic">Sin foto</span>
+            {{/if}}
+          </td>
+          <td class="py-2 px-4">{{nombre}} {{apellido}}</td>
+          <td class="py-2 px-4">{{correo}}</td>
+          <td class="py-2 px-4">{{telefono}}</td>
+          <td class="py-2 px-4">{{rol}}</td>
+          <td class="py-2 px-4 space-x-2">
+            <a href="/admin/employees/edit/{{id}}" class="text-blue-600 hover:underline"><i class="fas fa-edit"></i></a>
+            <a href="/admin/employees/delete/{{id}}" class="text-red-600 hover:underline" onclick="return confirm('¿Seguro que deseas eliminar este empleado?')"><i class="fas fa-trash-alt"></i></a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

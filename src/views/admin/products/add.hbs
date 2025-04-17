@@ -1,0 +1,25 @@
+{{!< ../layouts/main}}
+<div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Agregar Producto</h2>
+  <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <input type="text" name="nombre" placeholder="Nombre del producto" required class="w-full p-2 border rounded">
+    
+    <textarea name="descripcion" placeholder="Descripción" class="w-full p-2 border rounded" rows="3"></textarea>
+    
+    <input type="number" name="precio" placeholder="Precio" step="0.01" required class="w-full p-2 border rounded" min="0">
+    
+    <input type="number" name="stock" placeholder="Stock" required class="w-full p-2 border rounded" min="0">
+    
+    <input type="text" name="categoria" placeholder="Categoría" class="w-full p-2 border rounded" maxlength="100">
+    
+    <input type="file" name="imagen" accept="image/*" class="w-full p-2 border rounded">
+    
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Guardar</button>
+
+    {{#if error}}
+      <div class="bg-red-100 border border-red-400 text-red-700 p-2 rounded mt-2">
+        <i class="fas fa-exclamation-circle mr-1"></i>{{error}}
+      </div>
+    {{/if}}
+  </form>
+</div>
