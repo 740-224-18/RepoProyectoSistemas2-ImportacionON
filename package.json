@@ -15,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  
   "bugs": {
     "url": "https://github.com/740-224-18/RepoProyectoSistemas2-ImportacionON/issues"
   },
@@ -28,6 +27,7 @@
     "express-handlebars": "^8.0.1",
     "express-myconnection": "^1.0.4",
     "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.0",
     "nodemon": "^3.1.9"
