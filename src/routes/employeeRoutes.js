@@ -30,7 +30,6 @@ router.get('/edit/:id', showEditForm);
 router.post('/edit/:id', upload.single('foto'), updateEmployee);
 router.get('/delete/:id', deleteEmployee);
 
-const adminController = require('../controllers/adminController');
 
 // Rutas para empleados
 router.get('/employees', adminController.listEmployees);        // Ver empleados

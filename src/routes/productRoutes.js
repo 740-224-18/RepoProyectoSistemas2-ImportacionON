@@ -27,7 +27,6 @@ router.get('/edit/:id', showEditForm);
 router.post('/edit/:id', upload.single('imagen'), updateProduct);
 router.get('/delete/:id', deleteProduct);
 
-const adminController = require('../controllers/adminController');
 
 // Rutas para productos
 router.get('/products', adminController.listProducts);          // Ver productos
