@@ -1,0 +1,16 @@
+{{!< ../layouts/main}}
+
+<div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Completar Registro como Cliente</h2>
+
+  <form action="/register/client" method="POST" class="space-y-4">
+    <input type="text" name="nombres" placeholder="Nombre completo" required class="w-full p-2 border rounded">
+    <input type="text" name="apellidos" placeholder="Apellido completo" required class="w-full p-2 border rounded">
+    <input type="text" name="ci_o_nit" placeholder="Cédula de Identidad o NIT" required class="w-full p-2 border rounded">
+    <input type="email" name="email" placeholder="Correo electrónico" required class="w-full p-2 border rounded">
+    <input type="tel" name="celular" placeholder="Celular" required class="w-full p-2 border rounded">
+    <textarea name="direccion" placeholder="Dirección" class="w-full p-2 border rounded"></textarea>
+
+    <button type="submit" class="btn-gold w-full py-2 px-4 rounded-full">Completar Registro</button>
+  </form>
+</div>

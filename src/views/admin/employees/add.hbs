@@ -1,27 +1,73 @@
 {{!< ../layouts/main}}
 <div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
   <h2 class="text-xl font-bold mb-4">Agregar Empleado</h2>
+
   <form action="/admin/employees/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <!-- Nombre -->
+    <input type="text" name="nombres" placeholder="Nombre" required class="w-full p-2 border rounded">
 
-    <input type="text" name="nombre" placeholder="Nombre" required pattern="[A-Za-zÁ-ú\s]{2,}" maxlength="100"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500" title="Solo letras y espacios (mínimo 2 caracteres)">
+    <!-- Apellido -->
+    <input type="text" name="apellidos" placeholder="Apellido" required class="w-full p-2 border rounded">
 
-    <input type="text" name="apellido" placeholder="Apellido" required pattern="[A-Za-zÁ-ú\s]{2,}" maxlength="100"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
+    <!-- CI -->
+    <input type="text" name="ci" placeholder="Cédula de Identidad" required class="w-full p-2 border rounded">
 
-    <input type="email" name="correo" placeholder="Correo electrónico" required maxlength="100"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
+    <!-- Celular -->
+    <input type="tel" name="celular" placeholder="Celular" required class="w-full p-2 border rounded">
 
-    <input type="tel" name="telefono" placeholder="Teléfono (opcional)" maxlength="15" pattern="[0-9]{7,15}"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
+    <!-- Dirección -->
+    <textarea name="direccion" placeholder="Dirección" class="w-full p-2 border rounded"></textarea>
 
-    <input type="text" name="rol" placeholder="Rol (Ej: Administrador)" maxlength="50"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
+    <!-- Email -->
+    <input type="email" name="email" placeholder="Correo Electrónico" required class="w-full p-2 border rounded">
 
-    <input type="file" name="foto" accept="image/*"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
+    <!-- Cargo -->
+    <select name="cod_cargo" class="w-full p-2 border rounded">
+      <option value="" disabled selected>Seleccione un Cargo</option>
+      {{#each cargos}}
+        <option value="{{cod_cargo}}">{{nombre}}</option>
+      {{/each}}
+    </select>
 
-    <button type="submit"
-      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Guardar</button>
+    <!-- Foto -->
+    <input type="file" name="foto" accept="image/*" class="w-full p-2 border rounded">
+
+    <button type="submit" class="btn-gold">Guardar</button>
   </form>
+
+  <!-- Botón para agregar un cargo nuevo -->
+  <button type="button" data-modal-toggle="addCargoModal" class="w-full bg-red-600 text-white py-2 px-4 rounded mt-4">
+    Agregar Cargo
+  </button>
+
+  <!-- Modal para agregar un nuevo cargo -->
+  <div id="addCargoModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h3 class="text-xl font-bold mb-4">Agregar Nuevo Cargo</h3>
+      <form action="/admin/employees/add-cargo" method="POST" class="space-y-4">
+        <div>
+          <label class="block text-gray-700">Nombre del Cargo</label>
+          <input type="text" name="nombre" required class="w-full p-2 border rounded" placeholder="Ej. Gerente, Vendedor, etc.">
+        </div>
+        <div>
+          <label class="block text-gray-700">Salario</label>
+          <input type="number" name="salario" required step="0.01" class="w-full p-2 border rounded" placeholder="Ej. 2500.00">
+        </div>
+        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded mt-4">Guardar Cargo</button>
+      </form>
+      <button type="button" class="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded" onclick="toggleModal()">Cerrar</button>
+    </div>
+  </div>
+
 </div>
+
+<script>
+  // Función para mostrar y ocultar el modal
+  function toggleModal() {
+    const modal = document.getElementById('addCargoModal');
+    modal.classList.toggle('hidden');
+  }
+
+  // Mostrar el modal cuando se presione el botón "Agregar Cargo"
+  document.querySelector('[data-modal-toggle="addCargoModal"]').addEventListener('click', toggleModal);
+</script>
