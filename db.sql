@@ -50,7 +50,6 @@ CREATE TABLE ADMINISTRADOR (
     empleado_id INT UNIQUE,
     FOREIGN KEY (empleado_id) REFERENCES EMPLEADO(cod_empleado)
 );
-
 -- TABLA CLIENTE
 CREATE TABLE CLIENTE (
     cod_cliente INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,6 +69,7 @@ CREATE TABLE REGISTRO (
     usuario VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    rol INT DEFAULT 0,
     cliente_id INT UNIQUE,
     FOREIGN KEY (cliente_id) REFERENCES CLIENTE(cod_cliente)
 );
