@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes'); 
 const employeeRoutes = require('./routes/employeeRoutes');
 const productRoutes = require('./routes/productRoutes');
+const clientProductRoutes = require('./routes/clientProductRoutes'); 
 const path = require('path');
 
 const app = express();
@@ -73,6 +74,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', authRoutes);
 app.use('/admin/employees', employeeRoutes);
 app.use('/admin/products', productRoutes);
+app.use('/productos', clientProductRoutes);
 
 // Ruta raíz
 app.get('/', (req, res) => {
@@ -82,7 +84,9 @@ app.get('/', (req, res) => {
         res.redirect('/login');
     }
 });
-
+app.get('/productos', (req, res) => {
+    res.render('pages/productos');  // Renderiza la vista "pages/productos.hbs"
+}); 
 // Manejo de errores
 app.use((req, res) => {
     res.status(404).render('error', {

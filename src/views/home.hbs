@@ -1,143 +1,168 @@
-<div id="welcome-message" class="text-center my-24 text-3xl">
-    <h1>BIENVENIDO <b>{{toUpperCase nombre}}</b></h1>
-</div>
-
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{#if title}}{{title}}{{else}}ImportadoraON{{/if}}</title>
     
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     
     <!-- Font Awesome -->
-    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <style>
-      :root {
-        --azul-oscuro: #0A1122;
-        --azul-marino: #0F172A;
-        --oro: #FFD700;
-        --oro-claro: #FFAA00;
-        --texto-claro: #F8FAFC;
-      }
-      
-      .nav-link-gold {
-        border: 2px solid var(--oro);
-        color: var(--oro);
-        transition: all 0.3s ease;
-      }
-      
-      .nav-link-gold:hover {
-        background-color: var(--oro);
-        color: var(--azul-marino);
-      }
-      
-      .btn-gold {
-        background: linear-gradient(to right, var(--oro), var(--oro-claro));
-        color: var(--azul-marino);
-        font-weight: 600;
-      }
-      
-      .btn-gold:hover {
-        background: linear-gradient(to right, var(--oro-claro), var(--oro));
-      }
-    </style>
-  </head>
-  <body class="bg-[#0A1122] text-[#F8FAFC]">
-
-    <!-- Sección de Bienvenida -->
-    <section class="py-12 px-4 md:px-24 bg-gradient-to-b from-[#0A1122] to-[#0F172A]">
-      <div class="container mx-auto text-center">
-        <h2 class="text-4xl md:text-4xl font-bold text-[#FFD700]-700 mb-4">BIENVENIDO A IMPORTADORA O-N</O-N></h2>
-        <p class="text-[#F8FAFC]/80 text-lg max-w-2xl mx-auto">Líderes en importación y distribución de productos de alta calidad. Ofrecemos soluciones confiables para tus necesidades comerciales.</p>
-      </div>
-    </section>
-
-    <!-- Sección de Servicios -->
-    <section class="py-12 px-4 md:px-24 bg-[#0F172A]">
-      <div class="container mx-auto">
-        <h2 class="text-3xl font-bold text-[#FFD700] text-center mb-8">Nuestros Servicios</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-[#0A1122] p-6 rounded-lg border border-[#FFD700]/30 shadow-lg text-center hover:shadow-[#FFD700]/20 transition duration-300">
-            <i class="fas fa-shipping-fast text-4xl text-[#FFD700] mb-4"></i>
-            <h3 class="text-xl font-bold mb-2 text-[#FFD700]">Importación Rápida</h3>
-            <p class="text-[#F8FAFC]/80">Garantizamos entregas rápidas y seguras desde cualquier parte del mundo.</p>
-          </div>
-          <div class="bg-[#0A1122] p-6 rounded-lg border border-[#FFD700]/30 shadow-lg text-center hover:shadow-[#FFD700]/20 transition duration-300">
-            <i class="fas fa-boxes text-4xl text-[#FFD700] mb-4"></i>
-            <h3 class="text-xl font-bold mb-2 text-[#FFD700]">Amplio Catálogo</h3>
-            <p class="text-[#F8FAFC]/80">Variedad de productos para satisfacer todas tus necesidades comerciales.</p>
-          </div>
-          <div class="bg-[#0A1122] p-6 rounded-lg border border-[#FFD700]/30 shadow-lg text-center hover:shadow-[#FFD700]/20 transition duration-300">
-            <i class="fas fa-headset text-4xl text-[#FFD700] mb-4"></i>
-            <h3 class="text-xl font-bold mb-2 text-[#FFD700]">Soporte Personalizado</h3>
-            <p class="text-[#F8FAFC]/80">Nuestro equipo está siempre disponible para ayudarte.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sección de Productos Destacados -->
-    <section class="py-12 px-4 md:px-24 bg-[#0A1122]">
-      <div class="container mx-auto">
-        <h2 class="text-3xl font-bold text-[#FFD700] text-center mb-8">Productos Destacados</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {{#each productosDestacados}}
-          <div class="bg-[#0F172A] p-6 rounded-lg border border-[#FFD700]/30 shadow-lg hover:shadow-[#FFD700]/20 transition duration-300">
-            <img src="{{imagen}}" alt="{{nombre}}" class="w-full h-48 object-cover mb-4 rounded-lg">
-            <h3 class="text-xl font-bold mb-2 text-[#FFD700]">{{nombre}}</h3>
-            <p class="text-[#F8FAFC]/80 mb-4">{{descripcion}}</p>
-            <span class="text-lg font-bold text-[#FFD700]">${{precio}}</span>
-            <button class="mt-4 w-full bg-gradient-to-r from-[#FFD700] to-[#FFAA00] text-[#0F172A] font-bold py-2 px-4 rounded hover:from-[#FFAA00] hover:to-[#FFD700] transition duration-300">
-              Ver Detalles
-            </button>
-          </div>
-          {{/each}}
-        </div>
-      </div>
-    </section>
-
-    <!-- Pie de Página -->
-    <footer class="bg-[#0F172A] text-[#FFD700]/80 py-8 border-t border-[#FFD700]/10">
-      <div class="container mx-auto text-center">
-        <div class="flex justify-center space-x-6 mb-4">
-          <a href="#" class="text-[#FFD700]/70 hover:text-[#FFD700] text-xl"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="text-[#FFD700]/70 hover:text-[#FFD700] text-xl"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-[#FFD700]/70 hover:text-[#FFD700] text-xl"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <p class="mb-2">© {{currentYear}} Importadora O-N. Todos los derechos reservados.</p>
-        <div class="text-sm">
-          <a href="#" class="text-[#FFD700]/70 hover:text-[#FFD700] mx-2">Términos y Condiciones</a>
-          <a href="#" class="text-[#FFD700]/70 hover:text-[#FFD700] mx-2">Política de Privacidad</a>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Script para el año actual -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const yearElement = document.querySelector('footer p');
-        if (yearElement) {
-          const currentYear = new Date().getFullYear();
-          yearElement.textContent = yearElement.textContent.replace('{{currentYear}}', currentYear);
+        :root {
+            --azul-oscuro: #0A1122;
+            --azul-marino: #0F172A;
+            --plomo-oscuro: #333333;
+            --oro: #FFD700;
+            --oro-claro: #FFAA00;
+            --blanco-oscuro: #E8E8E8;
+            --texto-claro: #F6F6F6;
+            --rojo: #b90504;
+            --rojo-oscuro: #990100;
         }
-      });
+        
+        body {
+            background-color: var(--rojo-oscuro);
+            color: var(--texto-claro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .nav-link-gold {
+            border: 2px solid var(--oro);
+            color: var(--oro);
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link-gold:hover {
+            background-color: var(--oro);
+            color: var(--azul-marino);
+            transform: translateY(-1px);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(to right, var(--oro), var(--oro-claro));
+            color: var(--azul-marino);
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-gold:hover {
+            background: linear-gradient(to right, var(--oro-claro), var(--oro));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-red {
+            background: linear-gradient(to right, var(--rojo), var(--rojo-oscuro));
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-red:hover {
+            background: linear-gradient(to right, var(--rojo-oscuro), var(--rojo));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(209, 0, 0, 0.2);
+        }
+        
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: white;
+            -webkit-box-shadow: 0 0 0px 1000px var(--azul-oscuro) inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .shadow-gold {
+            box-shadow: 0 4px 6px rgba(255, 215, 0, 0.1);
+        }
+
+        .border-gold {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        .welcome-animation {
+            animation: fadeOut 0.5s ease-out 3s forwards;
+        }
+    </style>
+</head>
+<body class="bg-[#0A1122] text-[#F8FAFC]">
+    <!-- Barra de navegación -->
+    <nav class="flex py-4 bg-[#0F172A] text-white px-6 md:px-12 lg:px-24 border-b border-[#FFD700]/20 shadow-md">
+        
+
+        <!-- Menú de navegación -->
+        <ul class="w-1/2 px-4 md:px-8 flex justify-end items-center space-x-2 md:space-x-4">
+            <li><a href="/" class="nav-link-gold">Inicio</a></li>
+            <li><a href="/nosotros" class="nav-link-gold">Nosotros</a></li>
+            <li><a href="/productos" class="nav-link-gold">Productos</a></li>
+            <li><a href="/nuestras-marcas" class="nav-link-gold">Nuestras Marcas</a></li>
+            <li><a href="/contacto" class="nav-link-gold">Contactos</a></li>
+            <li><a href="/logout" class="nav-link-gold">Cerrar Sesion </a></li>
+
+            {{#if nombre}}
+            <!-- Avatar con menú desplegable -->
+            <div class="relative group ml-4">
+              <button class="flex items-center focus:outline-none">
+                <div class="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">
+                  {{nombre.[0]}}
+                </div>
+              </button>
+    
+              <div class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-md opacity-0 group-hover:opacity-100 invisible group-hover:visible transition duration-200 z-50">
+                <div class="px-4 py-2 text-sm text-gray-700 border-b">
+                  Bienvenido, <strong>{{nombre}}</strong>
+                </div>
+                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-100">
+                  <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                </a>
+              </div>
+            </div>
+            {{else}}
+            <!-- Botones para no autenticado -->
+            <div class="ml-4 flex items-center space-x-2">
+              <a href="/login" class="text-sm text-red-600 hover:underline"><i class="fas fa-sign-in-alt mr-1"></i> Iniciar sesión</a>
+              <span class="text-gray-400">|</span>
+              <a href="/register" class="text-sm text-red-600 hover:underline"><i class="fas fa-user-plus mr-1"></i> Registrarse</a>
+            </div>
+            {{/if}}
+        </ul>
+    </nav>
+
+    {{#if showWelcome}}
+        {{> welcome-message nombre=user.nombre}}
+    {{/if}}
+
+    <!-- Contenido principal -->
+    <main class="flex-grow">
+        {{{body}}}
+    </main>
+
+    <script src="/js/main.js">
+        // JavaScript para el desplegable del menú de usuario
+        const userMenuBtn = document.querySelector('button');
+        const userDropdown = document.querySelector('#userDropdown');
+    
+        if (userMenuBtn) {
+            userMenuBtn.addEventListener('click', () => {
+                userDropdown.classList.toggle('hidden');
+            });
+    
+            // Cerrar el menú si se hace clic fuera
+            window.addEventListener('click', function(e) {
+                if (!document.querySelector('#user-menu-wrapper').contains(e.target)) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
+        }
     </script>
-
-    {{{body}}}
-  </body>
+</body>
 </html>
-
-<script>
-    // Ocultar el mensaje después de 3 segundos y mostrar el contenido principal
-    setTimeout(() => {
-    document.getElementById('welcome-message').style.opacity = '0';
-    setTimeout(() => {
-        document.getElementById('welcome-message').style.display = 'none';
-        document.getElementById('main-content').classList.remove('hidden');
-    }, 500); // Espera a que termine la transición
-}, 3000);
-</script>

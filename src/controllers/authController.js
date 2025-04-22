@@ -96,6 +96,40 @@ function storeUser(req, res) {
   });
 }
 
+function storeClient(req, res) {
+  const { nombres, apellidos, ci_o_nit, email, celular, direccion } = req.body;
+
+  // Validamos que los campos no estén vacíos
+  if (!nombres || !apellidos || !ci_o_nit || !email || !celular || !direccion) {
+    return res.render('auth/registerClient', { error: 'Por favor complete todos los campos.' });
+  }
+
+  req.getConnection((err, conn) => {
+    const newClient = {
+      nombres,
+      apellidos,
+      ci_o_nit,
+      email,
+      celular,
+      direccion
+    };
+
+    // Insertamos el cliente en la tabla CLIENTE
+    conn.query('INSERT INTO CLIENTE SET ?', newClient, (err, result) => {
+      if (err) return res.status(500).send('Error al registrar el cliente.');
+
+      const clientId = result.insertId; // Obtenemos el ID del cliente registrado
+
+      // Actualizamos la tabla REGISTRO con el cliente_id
+      conn.query('UPDATE REGISTRO SET cliente_id = ? WHERE email = ?', [clientId, email], (err) => {
+        if (err) return res.status(500).send('Error al vincular cliente con el usuario.');
+        
+        res.redirect('/home');  // Redirigimos al home después de registrar al cliente
+      });
+    });
+  });
+}
+
 // Cerrar sesión
 function logout(req, res) {
   req.session.destroy();
@@ -128,6 +162,7 @@ module.exports = {
   auth,
   register,
   storeUser,
+  storeClient,
   logout,
   admindashboard,
   home
