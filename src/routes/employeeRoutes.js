@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-
 const {
+  saveCargo,
   listEmployees,
   showAddForm,
   saveEmployee,
@@ -12,17 +12,16 @@ const {
   deleteEmployee
 } = require('../controllers/employeeController');
 
-// Configuración de multer
+// Configuración de multer para imágenes de empleados
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../public/image/employees'), // 🟢 NUEVA RUTA
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname));
-    }
-  });
-  const upload = multer({ storage });
-  
+  destination: path.join(__dirname, '../public/image/employees'), // Ruta para las fotos de empleados
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Nombre único para cada archivo
+  }
+});
+const upload = multer({ storage });
 
-// Rutas del CRUD de empleados
+router.post('/add-cargo', saveCargo);
 router.get('/', listEmployees);
 router.get('/add', showAddForm);
 router.post('/add', upload.single('foto'), saveEmployee);

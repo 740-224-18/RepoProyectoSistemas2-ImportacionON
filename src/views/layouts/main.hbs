@@ -111,41 +111,61 @@
 
         <ul class="w-1/2 px-4 md:px-8 flex justify-end items-center space-x-2 md:space-x-4">
             {{#if nombre}}
-            <li class="flex items-center space-x-4">
-                <span class="text-[#FFD700] font-medium flex items-center">
-                    <i class="fas fa-user-circle mr-2"></i>
-                    {{nombre}}
-                </span>
-                <a href="/logout" class="nav-link-gold px-3 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
-                    <i class="fas fa-sign-out-alt mr-2"></i> Salir
+            <!-- Avatar con menú desplegable -->
+            <div class="relative group ml-4">
+              <button class="flex items-center focus:outline-none">
+                <div class="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">
+                  {{nombre.[0]}}
+                </div>
+              </button>
+    
+              <div class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-md opacity-0 group-hover:opacity-100 invisible group-hover:visible transition duration-200 z-50">
+                <div class="px-4 py-2 text-sm text-gray-700 border-b">
+                  Bienvenido, <strong>{{nombre}}</strong>
+                </div>
+                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-100">
+                  <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
                 </a>
-            </li>
+              </div>
+            </div>
             {{else}}
-            <li>
-                <a href="/login" class="nav-link-gold px-3 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
-                    <i class="fas fa-sign-in-alt mr-2"></i> Ingresar
-                </a>
-            </li>
-            <li class="ml-2">
-                <a href="/register" class="btn-gold px-4 py-2 rounded-md text-sm font-medium flex items-center hover:shadow-gold">
-                    <i class="fas fa-user-plus mr-2"></i> Registro
-                </a>
-            </li>
+            <!-- Botones para no autenticado -->
+            <div class="ml-4 flex items-center space-x-2">
+              <a href="/login" class="text-sm text-red-600 hover:underline"><i class="fas fa-sign-in-alt mr-1"></i> Iniciar sesión</a>
+              <span class="text-gray-400">|</span>
+              <a href="/register" class="text-sm text-red-600 hover:underline"><i class="fas fa-user-plus mr-1"></i> Registrarse</a>
+            </div>
             {{/if}}
+
         </ul>
     </nav>
 
     {{#if showWelcome}}
         {{> welcome-message nombre=user.nombre}}
     {{/if}}
+
     <!-- Contenido principal -->
     <main class="flex-grow">
         {{{body}}}
     </main>
 
     <script src="/js/main.js">
-
-        
+        // JavaScript para el desplegable del menú de usuario
+        const userMenuBtn = document.querySelector('button');
+        const userDropdown = document.querySelector('#userDropdown');
+    
+        if (userMenuBtn) {
+            userMenuBtn.addEventListener('click', () => {
+                userDropdown.classList.toggle('hidden');
+            });
+    
+            // Cerrar el menú si se hace clic fuera
+            window.addEventListener('click', function(e) {
+                if (!document.querySelector('#user-menu-wrapper').contains(e.target)) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
+        }
     </script>
 </body>
 </html>
