@@ -1,155 +1,177 @@
+/* ----- Paleta de Colores ----- */
 :root {
-    --primary: #d10000; 
-    --primary-dark: #a00000; 
-    --primary-light: #ff4d4d; 
-    --secondary: #333333; 
-    --accent: #ffd700; 
-    --light: #f8f8f8;
+    --blanco-claro: #F6F6F6;
+    --gris-claro: #E8E8E8;
+    --gris-oscuro: #333333;
+    --rojo-oscuro: #990100;
+    --rojo-medio: #B90504;
+    --beige-suave: #F2E1B3;
+    --amarillo-dorado: #FFD700;
+    --negro-suave: #222222;
+    --gris-calido: #D1D1D1;
 }
 
-/* General */
+/* ----- Colores de Fondo, Texto y Elementos ----- */
 body {
-    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
-    min-height: 100vh;
+    background-color: var(--blanco-claro);
+    color: var(--gris-oscuro);
 }
 
-/* Botones */
+.header-gradient {
+    background: linear-gradient(90deg, var(--rojo-medio) 0%, var(--rojo-oscuro) 100%);
+}
+
+.sidebar {
+    background-color: var(--gris-oscuro);
+    color: var(--blanco-claro);
+}
+
+.sidebar a {
+    color: var(--blanco-claro);
+}
+
+.sidebar a:hover {
+    background-color: var(--rojo-oscuro);
+}
+
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
+    background: var(--rojo-medio);
+    color: var(--blanco-claro);
     transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    background: var(--rojo-oscuro);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(209, 0, 0, 0.3);
 }
 
-.btn-accent {
-    background: linear-gradient(135deg, var(--accent) 0%, #ffaa00 100%);
-    color: var(--secondary);
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.footer-gradient {
+    background: linear-gradient(90deg, var(--gris-oscuro) 0%, var(--negro-suave) 100%);
 }
 
-.btn-accent:hover {
-    background: linear-gradient(135deg, #ffaa00 0%, var(--accent) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-}
-
-/* Card Services */
-.service-card, .product-card {
-    background-color: white;
-    border-radius: 0.5rem;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    text-align: center;
-    border: 1px solid rgba(209, 0, 0, 0.1);
-}
-
-.service-card:hover, .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.service-icon, .product-image {
-    width: 4rem;
-    height: 4rem;
-    background-color: var(--primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 1.5rem;
-}
-
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-/* Input Focus */
 .input-focus:focus {
-    border-color: var(--primary);
+    border-color: var(--rojo-medio);
     box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.1);
 }
 
-/* Footer */
-.footer-gradient {
-    background: linear-gradient(90deg, var(--secondary) 0%, #222 100%);
+/* ----- Colores Complementarios ----- */
+.card-highlight {
+    background-color: var(--beige-suave);
 }
 
-/* Navegación */
-.nav-item {
-    position: relative;
-    padding-bottom: 5px;
+.btn-gold {
+    background: linear-gradient(to right, var(--amarillo-dorado), var(--rojo-medio));
+    color: var(--negro-suave);
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent);
-    transition: width 0.3s ease;
+.btn-gold:hover {
+    background: linear-gradient(to right, var(--rojo-medio), var(--amarillo-dorado));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(255, 215, 0, 0.2);
 }
 
-.nav-item:hover::after {
-    width: 100%;
+.text-secondary {
+    color: var(--gris-calido);
 }
 
-.active-section {
-    color: var(--accent) !important;
+.text-primary {
+    color: var(--rojo-oscuro);
 }
 
-.active-section::after {
-    width: 100% !important;
+.card-hover:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
 }
 
-/* Paginación */
-.pagination {
-    display: flex;
-    gap: 0.5rem;
+/* ----- Animaciones y Transiciones (sin cambios) ----- */
+.floating {
+    animation: floating 3s ease-in-out infinite;
 }
 
-.page-link {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.25rem;
-    background-color: white;
-    color: var(--secondary);
-    transition: all 0.3s;
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
 }
 
-.page-link:hover {
-    background-color: var(--primary);
-    color: white;
+/* Transiciones suaves para botones */
+.transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.page-link.active {
-    background-color: var(--primary);
-    color: white;
-    font-weight: bold;
+/* ----- Ajustes para inputs y bordes ----- */
+input, textarea, select {
+    border-radius: 5px;
+    background-color: var(--gris-claro);
+    border: 1px solid var(--gris-oscuro);
+    padding: 10px;
+    color: var(--gris-oscuro);
+}
+
+/* ----- Sección de Cards, Botones y más ---- */
+.card {
+    background-color: var(--blanco-claro);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    color: var(--gris-oscuro);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    color: var(--gris-calido);
+}
+
+.card-footer {
+    background-color: var(--gris-claro);
+}
+
+/* ----- Animaciones para elementos como menú y botones ----- */
+.menu-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* ----- Títulos ----- */
+h1, h2, h3 {
+    color: var(--rojo-oscuro);
+}
+
+h4, h5, h6 {
+    color: var(--gris-oscuro);
+}
+
+
+header {
+    background: var(--rojo-medio);
+    color: var(--blanco-claro);
+}
+
+footer {
+    background: var(--gris-oscuro);
+    color: var(--blanco-claro);
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer a {
+    color: var(--amarillo-dorado);
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
