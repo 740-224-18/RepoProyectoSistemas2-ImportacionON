@@ -1,45 +1,45 @@
 {{!< ../layouts/main}}
-<div class="p-6">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-bold">Productos</h2>
-    <a href="/admin/products/add" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
-      <i class="fas fa-plus-circle mr-1"></i> Agregar Producto
-    </a>
-  </div>
-  <div class="overflow-x-auto bg-white rounded-lg shadow">
-    <table class="min-w-full text-sm">
-      <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-        <tr>
-          <th class="py-3 px-4">Imagen</th>
-          <th class="py-3 px-4">Nombre</th>
-          <th class="py-3 px-4">Categoría</th>
-          <th class="py-3 px-4">Precio</th>
-          <th class="py-3 px-4">Stock</th>
-          <th class="py-3 px-4">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="text-gray-700">
-        {{#each productos}}
-        <tr class="border-t">
-          <td class="py-2 px-4">
-            {{#if imagen}}
-              <img src="/images/products/{{imagen}}" alt="producto" class="w-10 h-10 rounded object-cover">
 
+<div class="p-6 bg-white rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Lista de Productos</h2>
+
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr class="text-left">
+        <th class="px-4 py-2">Imagen</th>
+        <th class="px-4 py-2">Nombre</th>
+        <th class="px-4 py-2">Descripción</th>
+        <th class="px-4 py-2">Precio</th>
+        <th class="px-4 py-2">Stock</th>
+        <th class="px-4 py-2">Categoría</th>
+        <th class="px-4 py-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each productos}}
+        <tr>
+          <td class="px-4 py-2">
+            {{#if foto}}
+              <img src="/images/products/{{foto}}" alt="Foto de {{nombre}}" class="w-12 h-12 object-cover rounded">
             {{else}}
-              <span class="text-gray-400 italic">Sin imagen</span>
+              <span class="text-gray-400 italic">Sin foto</span>
             {{/if}}
           </td>
-          <td class="py-2 px-4">{{nombre}}</td>
-          <td class="py-2 px-4">{{categoria}}</td>
-          <td class="py-2 px-4">${{precio}}</td>
-          <td class="py-2 px-4">{{stock}}</td>
-          <td class="py-2 px-4 space-x-2">
-            <a href="/admin/products/edit/{{id}}" class="text-blue-600 hover:underline"><i class="fas fa-edit"></i></a>
-            <a href="/admin/products/delete/{{id}}" class="text-red-600 hover:underline" onclick="return confirm('¿Eliminar producto?')"><i class="fas fa-trash-alt"></i></a>
+          <td class="px-4 py-2">{{nombre}}</td>
+          <td class="px-4 py-2">{{descripcion}}</td>
+          <td class="px-4 py-2">${{precio}}</td>
+          <td class="px-4 py-2">{{stock}}</td>
+          <td class="px-4 py-2">
+            {{categoria_nombre}}
+          </td>
+          <td class="px-4 py-2">
+            <a href="/admin/products/edit/{{cod_producto}}" class="text-blue-600 hover:underline">Editar</a> | 
+            <a href="/admin/products/delete/{{cod_producto}}" class="text-red-600 hover:underline" onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?')">Eliminar</a>
           </td>
         </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <a href="/admin/products/add" class="mt-4 inline-block bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition">Agregar Nuevo Producto</a>
 </div>

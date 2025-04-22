@@ -1,25 +1,66 @@
 {{!< ../layouts/main}}
 <div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
   <h2 class="text-xl font-bold mb-4">Agregar Producto</h2>
-  <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-4">
-    <input type="text" name="nombre" placeholder="Nombre del producto" required class="w-full p-2 border rounded">
-    
-    <textarea name="descripcion" placeholder="Descripción" class="w-full p-2 border rounded" rows="3"></textarea>
-    
-    <input type="number" name="precio" placeholder="Precio" step="0.01" required class="w-full p-2 border rounded" min="0">
-    
-    <input type="number" name="stock" placeholder="Stock" required class="w-full p-2 border rounded" min="0">
-    
-    <input type="text" name="categoria" placeholder="Categoría" class="w-full p-2 border rounded" maxlength="100">
-    
-    <input type="file" name="imagen" accept="image/*" class="w-full p-2 border rounded">
-    
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Guardar</button>
 
-    {{#if error}}
-      <div class="bg-red-100 border border-red-400 text-red-700 p-2 rounded mt-2">
-        <i class="fas fa-exclamation-circle mr-1"></i>{{error}}
-      </div>
-    {{/if}}
+  <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <!-- Nombre del producto -->
+    <input type="text" name="nombre" placeholder="Nombre del producto" required class="w-full p-2 border rounded">
+
+    <!-- Descripción -->
+    <textarea name="descripcion" placeholder="Descripción" class="w-full p-2 border rounded"></textarea>
+
+    <!-- Precio -->
+    <input type="number" name="precio" placeholder="Precio" required step="0.01" class="w-full p-2 border rounded">
+
+    <!-- Stock -->
+    <input type="number" name="stock" placeholder="Stock" required class="w-full p-2 border rounded">
+
+    <!-- Categoría -->
+    <select name="cod_cat" class="w-full p-2 border rounded">
+      <option value="" disabled selected>Seleccione una Categoría</option>
+      {{#each categorias}}
+        <option value="{{cod_cat}}">{{nombre}}</option>
+      {{/each}}
+    </select>
+
+    <!-- Foto -->
+    <input type="file" name="foto" accept="image/*" class="w-full p-2 border rounded">
+
+    <button type="submit" class="btn-gold">Guardar</button>
   </form>
+
+  <!-- Botón para agregar una nueva categoría -->
+  <button type="button" data-modal-toggle="addCategoryModal" class="w-full bg-red-600 text-white py-2 px-4 rounded mt-4">
+    Agregar Categoría
+  </button>
+
+  <!-- Modal para agregar una nueva categoría -->
+  <div id="addCategoryModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h3 class="text-xl font-bold mb-4">Agregar Nueva Categoría</h3>
+      <form action="/admin/products/add-category" method="POST" class="space-y-4">
+        <div>
+          <label class="block text-gray-700">Nombre de la Categoría</label>
+          <input type="text" name="nombre" required class="w-full p-2 border rounded" placeholder="Ej. Electrónica, Muebles, etc.">
+        </div>
+        <div>
+          <label class="block text-gray-700">Descripción</label>
+          <textarea name="descripcion" required class="w-full p-2 border rounded" placeholder="Descripción de la categoría"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded mt-4">Guardar Categoría</button>
+      </form>
+      <button type="button" class="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded" onclick="toggleModal()">Cerrar</button>
+    </div>
+  </div>
 </div>
+
+<script>
+  // Función para mostrar y ocultar el modal
+  function toggleModal() {
+    const modal = document.getElementById('addCategoryModal');
+    modal.classList.toggle('hidden');
+  }
+
+  // Mostrar el modal cuando se presione el botón "Agregar Categoría"
+  document.querySelector('[data-modal-toggle="addCategoryModal"]').addEventListener('click', toggleModal);
+</script>
