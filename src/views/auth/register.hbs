@@ -158,9 +158,24 @@
             <i class="fas fa-sign-in-alt mr-1"></i> ¿Ya tienes cuenta? Inicia sesión
         </a>
     </div>
-</form>
+    </form>
 
         </div>
     </main>
+    <script>
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        const icon = input.nextElementSibling.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+    </script>
+
+</body>
 
     
