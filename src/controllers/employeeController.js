@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 // Guardar nuevo cargo
-// Guardar nuevo cargo
 function saveCargo(req, res) {
   const { nombre, salario, descripcion } = req.body; // Agregamos descripcion
   const cargo = { nombre, salario, descripcion }; // Incluimos descripción
