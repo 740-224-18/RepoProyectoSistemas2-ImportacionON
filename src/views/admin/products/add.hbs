@@ -1,55 +1,94 @@
 {{!< ../layouts/main}}
-<div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
-  <h2 class="text-xl font-bold mb-4">Agregar Producto</h2>
 
-  <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-4">
-    <!-- Nombre del producto -->
-    <input type="text" name="nombre" placeholder="Nombre del producto" required class="w-full p-2 border rounded">
+<div class="container mx-auto p-6">
+  <div class="bg-[#F8F8F8] rounded-xl shadow-lg overflow-hidden p-6 max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold mb-6 text-[#333333] border-b pb-2 border-[#E8EBE8]">Agregar Producto</h2>
 
-    <!-- Descripción -->
-    <textarea name="descripcion" placeholder="Descripción" class="w-full p-2 border rounded"></textarea>
+    <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-6">
+      <!-- Nombre del producto -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Nombre del Producto</label>
+        <input type="text" name="nombre" placeholder="Nombre del producto" required 
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
 
-    <!-- Precio -->
-    <input type="number" name="precio" placeholder="Precio" required step="0.01" class="w-full p-2 border rounded">
+      <!-- Descripción -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Descripción</label>
+        <textarea name="descripcion" placeholder="Descripción" 
+                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent h-24 shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]"></textarea>
+      </div>
 
-    <!-- Stock -->
-    <input type="number" name="stock" placeholder="Stock" required class="w-full p-2 border rounded">
+      <!-- Precio -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Precio</label>
+        <input type="number" name="precio" placeholder="Precio" required step="0.01" 
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
 
-    <!-- Categoría -->
-    <select name="cod_cat" class="w-full p-2 border rounded">
-      <option value="" disabled selected>Seleccione una Categoría</option>
-      {{#each categorias}}
-        <option value="{{cod_cat}}">{{nombre}}</option>
-      {{/each}}
-    </select>
+      <!-- Stock -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Stock</label>
+        <input type="number" name="stock" placeholder="Stock" required 
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
 
-    <!-- Foto -->
-    <input type="file" name="foto" accept="image/*" class="w-full p-2 border rounded">
+      <!-- Categoría -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Categoría</label>
+        <select name="cod_cat" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+          <option value="" disabled selected>Seleccione una Categoría</option>
+          {{#each categorias}}
+            <option value="{{cod_cat}}">{{nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
 
-    <button type="submit" class="btn-gold">Guardar</button>
-  </form>
+      <!-- Foto -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Foto</label>
+        <input type="file" name="foto" accept="image/*" 
+               class="w-full text-sm text-[#333333] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#E8EBE8] file:text-[#333333] hover:file:bg-[#D1D5D8]">
+      </div>
 
-  <!-- Botón para agregar una nueva categoría -->
-  <button type="button" data-modal-toggle="addCategoryModal" class="w-full bg-red-600 text-white py-2 px-4 rounded mt-4">
-    Agregar Categoría
-  </button>
+      <div class="flex justify-end space-x-4 pt-4 border-t border-[#E8EBE8]">
+        <button type="submit" class="px-6 py-2 bg-[#B90504] text-black rounded-lg hover:bg-[#990100] transition-all duration-200 flex items-center">
+          <i class="fas fa-save mr-2"></i> Guardar Producto
+        </button>
+        <a href="/admin/products" class="px-6 py-2 border border-[#E8EBE8] text-[#333333] rounded-lg hover:bg-[#E8EBE8] transition-all duration-200 flex items-center">
+          <i class="fas fa-times mr-2"></i> Cancelar
+        </a>
+      </div>
+    </form>
 
-  <!-- Modal para agregar una nueva categoría -->
-  <div id="addCategoryModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-      <h3 class="text-xl font-bold mb-4">Agregar Nueva Categoría</h3>
-      <form action="/admin/products/add-category" method="POST" class="space-y-4">
-        <div>
-          <label class="block text-gray-700">Nombre de la Categoría</label>
-          <input type="text" name="nombre" required class="w-full p-2 border rounded" placeholder="Ej. Electrónica, Muebles, etc.">
+    <!-- Botón para agregar una nueva categoría -->
+    <div class="mt-8">
+      <button type="button" data-modal-toggle="addCategoryModal" 
+              class="w-full flex items-center justify-center space-x-2 bg-[#333333] text-black py-2 px-4 rounded-lg hover:bg-[#444444] transition-all duration-200">
+        <i class="fas fa-plus"></i>
+        <span>Agregar Categoría</span>
+      </button>
+
+      <!-- Modal para agregar una nueva categoría -->
+      <div id="addCategoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
+        <div class="bg-black p-6 rounded-lg shadow-lg max-w-md w-full">
+          <h3 class="text-xl font-bold mb-4">Agregar Nueva Categoría</h3>
+          <form action="/admin/products/add-category" method="POST" class="space-y-4">
+            <div>
+              <label class="block text-black">Nombre de la Categoría</label>
+              <input type="text" name="nombre" required 
+                     class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-black focus:border-transparent" placeholder="Ej. Electrónica, Muebles, etc.">
+            </div>
+            <div>
+              <label class="block text-[#333333]">Descripción</label>
+              <textarea name="descripcion" required 
+                        class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent" placeholder="Descripción de la categoría"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-black py-2 px-4 rounded mt-4">Guardar Categoría</button>
+          </form>
+          <button type="button" class="mt-4 w-full bg-gray-500 text-black py-2 px-4 rounded" onclick="toggleModal()">Cerrar</button>
         </div>
-        <div>
-          <label class="block text-gray-700">Descripción</label>
-          <textarea name="descripcion" required class="w-full p-2 border rounded" placeholder="Descripción de la categoría"></textarea>
-        </div>
-        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded mt-4">Guardar Categoría</button>
-      </form>
-      <button type="button" class="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded" onclick="toggleModal()">Cerrar</button>
+      </div>
     </div>
   </div>
 </div>
