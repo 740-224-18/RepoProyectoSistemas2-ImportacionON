@@ -2,44 +2,46 @@ const path = require('path');
 const fs = require('fs');
 
 // Guardar nuevo cargo
+// Guardar nuevo cargo
 function saveCargo(req, res) {
-  const data = req.body;
-
-  const cargo = {
-    nombre: data.nombre,
-    salario: data.salario
-  };
+  const { nombre, salario, descripcion } = req.body; // Agregamos descripcion
+  const cargo = { nombre, salario, descripcion }; // Incluimos descripción
 
   req.getConnection((err, conn) => {
+    if (err) return res.status(500).send('Error de conexión a la base de datos');
     conn.query('INSERT INTO CARGO SET ?', cargo, (err) => {
       if (err) {
         console.error('Error al guardar cargo:', err);
         return res.status(500).send('Error al guardar el cargo');
       }
-      res.redirect('/admin/employees/add'); // Redirige al formulario de agregar empleado
+      res.redirect('/admin/employees/add');
     });
   });
 }
+
 // Listar empleados
-// En la función listEmployees
 function listEmployees(req, res) {
   req.getConnection((err, conn) => {
-    // Consulta optimizada con JOIN
-    conn.query(`
+    if (err) return res.status(500).send('Error de conexión');
+
+    const empleadosQuery = `
       SELECT 
         e.*,
         c.nombre AS cargo_nombre,
         c.salario
       FROM EMPLEADO e
       INNER JOIN CARGO c ON e.cod_cargo = c.cod_cargo
-    `, (err, empleados) => {
+    `;
+
+    conn.query(empleadosQuery, (err, empleados) => {
       if (err) return res.status(500).send('Error al listar empleados');
-      
-      // Obtener cargos solo para formularios (si es necesario)
+
       conn.query('SELECT * FROM CARGO', (err, cargos) => {
+        if (err) return res.status(500).send('Error al obtener cargos');
+
         res.render('admin/employees/employees', {
-          empleados, // Ahora cada empleado tiene cargo_nombre
-          cargos,    // Para formularios de edición/agregar
+          empleados,
+          cargos,
           active: { empleados: true },
           nombre: req.session.nombre
         });
@@ -51,6 +53,7 @@ function listEmployees(req, res) {
 // Mostrar formulario de agregar
 function showAddForm(req, res) {
   req.getConnection((err, conn) => {
+    if (err) return res.status(500).send('Error de conexión');
     conn.query('SELECT * FROM CARGO', (err, cargos) => {
       if (err) return res.status(500).send('Error al obtener cargos');
       res.render('admin/employees/add', {
@@ -62,10 +65,10 @@ function showAddForm(req, res) {
   });
 }
 
-// Guardar empleado
+// Guardar nuevo empleado
 function saveEmployee(req, res) {
   const data = req.body;
-  const file = req.file;
+  const file = req.file; // Asegúrate de que multer o similar esté configurado
 
   const empleado = {
     nombres: data.nombres,
@@ -74,16 +77,22 @@ function saveEmployee(req, res) {
     celular: data.celular,
     direccion: data.direccion,
     fecha_contratacion: new Date(),
-    email: data.email,
     foto: file ? file.filename : null,
-    cod_cargo: data.cod_cargo
+    cod_cargo: data.cod_cargo,
+    genero_id: data.genero_id,
+    email: data.email
   };
 
   req.getConnection((err, conn) => {
+    if (err) return res.status(500).send('Error de conexión');
     conn.query('INSERT INTO EMPLEADO SET ?', empleado, (err) => {
       if (err) {
         console.error('Error al guardar empleado:', err);
-        return res.render('admin/employees/add', { error: 'Error al guardar el empleado' });
+        return res.render('admin/employees/add', {
+          error: 'Error al guardar el empleado',
+          nombre: req.session.nombre,
+          active: { empleados: true }
+        });
       }
       res.redirect('/admin/employees');
     });
@@ -93,15 +102,20 @@ function saveEmployee(req, res) {
 // Mostrar formulario de edición
 function showEditForm(req, res) {
   const id = req.params.id;
-  
+
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM EMPLEADO WHERE cod_empleado = ?', [id], (err, empleado) => {
-      if (err || empleado.length === 0) return res.status(404).send('Empleado no encontrado');
-      
+    if (err) return res.status(500).send('Error de conexión');
+
+    conn.query('SELECT * FROM EMPLEADO WHERE cod_empleado = ?', [id], (err, result) => {
+      if (err || result.length === 0) return res.status(404).send('Empleado no encontrado');
+
+      const empleado = result[0];
+
       conn.query('SELECT * FROM CARGO', (err, cargos) => {
         if (err) return res.status(500).send('Error al obtener cargos');
+
         res.render('admin/employees/edit', {
-          empleado: empleado[0],
+          empleado,
           cargos,
           active: { empleados: true },
           nombre: req.session.nombre
@@ -118,8 +132,13 @@ function updateEmployee(req, res) {
   const file = req.file;
 
   req.getConnection((err, conn) => {
+    if (err) return res.status(500).send('Error de conexión');
+
+    // Obtener la foto actual para eliminar si se reemplaza
     conn.query('SELECT foto FROM EMPLEADO WHERE cod_empleado = ?', [id], (err, rows) => {
-      const oldFoto = rows[0]?.foto;
+      if (err || rows.length === 0) return res.status(404).send('Empleado no encontrado');
+
+      const oldFoto = rows[0].foto;
 
       const empleado = {
         nombres: data.nombres,
@@ -128,14 +147,20 @@ function updateEmployee(req, res) {
         celular: data.celular,
         direccion: data.direccion,
         email: data.email,
-        cod_cargo: data.cod_cargo
+        cod_cargo: data.cod_cargo,
+        genero_id: data.genero_id
       };
 
       if (file) {
         empleado.foto = file.filename;
+        // Eliminar la foto antigua si existe
         if (oldFoto) {
           const filePath = path.join(__dirname, '..', 'public', 'image', 'employees', oldFoto);
-          if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+          if (fs.existsSync(filePath)) {
+            fs.unlink(filePath, (err) => {
+              if (err) console.error('Error al eliminar la imagen antigua:', err);
+            });
+          }
         }
       }
 
@@ -150,14 +175,30 @@ function updateEmployee(req, res) {
 // Eliminar empleado
 function deleteEmployee(req, res) {
   const id = req.params.id;
+
   req.getConnection((err, conn) => {
+    if (err) return res.status(500).send('Error de conexión');
+
+    // Obtener foto para eliminarla luego
     conn.query('SELECT foto FROM EMPLEADO WHERE cod_empleado = ?', [id], (err, rows) => {
-      const foto = rows[0]?.foto;
+      if (err || rows.length === 0) return res.status(404).send('Empleado no encontrado');
+
+      const foto = rows[0].foto;
+
+      // Eliminar empleado
       conn.query('DELETE FROM EMPLEADO WHERE cod_empleado = ?', [id], (err) => {
+        if (err) return res.status(500).send('Error al eliminar el empleado');
+
+        // Eliminar archivo si existe
         if (foto) {
           const filePath = path.join(__dirname, '..', 'public', 'image', 'employees', foto);
-          if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+          if (fs.existsSync(filePath)) {
+            fs.unlink(filePath, (err) => {
+              if (err) console.error('Error al eliminar la imagen del empleado:', err);
+            });
+          }
         }
+
         res.redirect('/admin/employees');
       });
     });
