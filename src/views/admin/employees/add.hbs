@@ -41,6 +41,26 @@
                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
+        <!-- Fecha de Nacimiento -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Fecha de Nacimiento</label>
+          <input type="date" name="fecha_nacimiento" required
+       class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-black placeholder-[#A0A0A0]">
+        </div>
+
+        <!-- Género -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Género</label>
+          <select name="genero_id" required
+                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-black">
+            <option value="" disabled>Seleccione un género</option>
+            {{#each generos}}
+              <option value="{{cod_genero}}">{{nombre}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Correo Electrónico</label>
@@ -52,13 +72,6 @@
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Contraseña</label>
           <input type="password" name="password" placeholder="Contraseña" required
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
-        </div>
-
-        <!-- Confirmar Contraseña -->
-        <div>
-          <label class="block text-sm font-medium text-[#333333] mb-1">Confirmar Contraseña</label>
-          <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required
                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 

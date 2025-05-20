@@ -69,6 +69,7 @@ router.post('/add', isLoggedIn, isAdmin, (req, res, next) => {
     }
     next();
   });
+  
 }, saveEmployee);
 
 router.get('/edit/:id', isLoggedIn, isAdmin, showEditForm);

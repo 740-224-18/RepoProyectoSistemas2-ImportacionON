@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const util = require('util');
 
+
+
 // Guardar nuevo cargo
 async function saveCargo(req, res) {
   const { nombre, salario, descripcion } = req.body;
@@ -81,6 +83,11 @@ async function saveEmployee(req, res) {
     const getConnection = util.promisify(req.getConnection).bind(req);
     const conn = await getConnection();
     const query = util.promisify(conn.query).bind(conn);
+    const fechaNacimiento = new Date(req.body.fecha_nacimiento);
+    const hoy = new Date();
+    if (fechaNacimiento > hoy) {
+      return res.status(400).send('La fecha de nacimiento no puede ser mayor a la fecha actual.');
+    }
 
     // Validar si email ya existe en REGISTRO
     const existing = await query('SELECT * FROM REGISTRO WHERE email = ?', [data.email]);
@@ -104,7 +111,6 @@ async function saveEmployee(req, res) {
     const resultRegistro = await query('INSERT INTO REGISTRO SET ?', registro);
     const usuario_id = resultRegistro.insertId;
 
-    // Insertar en EMPLEADO (sin password duplicado)
     const empleado = {
       usuario_id,
       nombres: data.nombres,
@@ -113,6 +119,7 @@ async function saveEmployee(req, res) {
       celular: data.celular,
       direccion: data.direccion,
       fecha_contratacion: new Date(),
+      fecha_nacimiento: data.fecha_nacimiento,
       foto: file ? file.filename : null,
       cod_cargo: data.cod_cargo,
       genero_id: data.genero_id,
@@ -150,11 +157,15 @@ async function showEditForm(req, res) {
     }
     const empleado = result[0];
 
+    const generos = await query('SELECT * FROM GENERO');
+
     const cargos = await query('SELECT * FROM CARGO');
 
     res.render('admin/employees/edit', {
       empleado,
+      generos,
       cargos,
+      fechaMaxima: getFechaMaxima(),
       active: { empleados: true },
       nombre: req.session.nombre
     });
@@ -162,6 +173,14 @@ async function showEditForm(req, res) {
     console.error('Error al obtener empleado o cargos:', err);
     res.status(500).send('Error al obtener datos');
   }
+}
+
+function getFechaMaxima() {
+  const hoy = new Date();
+  const yyyy = hoy.getFullYear();
+  const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+  const dd = String(hoy.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 // Actualizar empleado
@@ -181,15 +200,23 @@ async function updateEmployee(req, res) {
     }
     const oldFoto = rows[0].foto;
 
+    // VALIDACIÓN Y LIMPIEZA DE genero_id
+    /*let generoId = data.genero_id;
+    if (!generoId || isNaN(Number(generoId))) {
+      return res.status(400).send('Debe seleccionar un género válido.');
+    }
+    generoId = Number(generoId);*/
+
     const empleado = {
       nombres: data.nombres,
       apellidos: data.apellidos,
       ci: data.ci,
       celular: data.celular,
+      fecha_nacimiento: data.fecha_nacimiento,
+      genero_id: data.genero_id,
       direccion: data.direccion,
       email: data.email,
-      cod_cargo: data.cod_cargo,
-      genero_id: data.genero_id
+      cod_cargo: data.cod_cargo
     };
 
     if (file) {

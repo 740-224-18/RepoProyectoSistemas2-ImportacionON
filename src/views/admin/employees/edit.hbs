@@ -33,6 +33,27 @@
                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
+        <!-- Fecha de Nacimiento -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Fecha de Nacimiento</label>
+          <input type="date" name="fecha_nacimiento" required
+                 value="{{empleado.fecha_nacimiento}}"
+                 max="{{fechaMaxima}}"
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-black placeholder-[#A0A0A0]">
+        </div>
+
+        <!-- Género -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Género</label>
+          <select name="genero_id" required
+                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-black">
+            <option value="" disabled {{#unless empleado.genero_id}}selected{{/unless}}>Seleccione un género</option>
+            {{#each generos}}
+              <option value="{{cod_genero}}" {{#ifCond cod_genero ../empleado.genero_id}}selected{{/ifCond}}>{{nombre}}</option>
+            {{/each}}
+          </select>
+        </div>
+
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Correo Electrónico</label>
@@ -45,9 +66,7 @@
           <label class="block text-sm font-medium text-[#333333] mb-1">Cargo</label>
           <select name="cod_cargo" required
                   class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333]">
-            {{!-- Mostrar opción actual seleccionada --}}
             <option value="{{empleado.cod_cargo}}" selected>{{empleado.cargo_nombre}}</option>
-            {{!-- Mostrar los demás cargos sin repetir el actual --}}
             {{#each cargos}}
               {{#unless (eq cod_cargo ../empleado.cod_cargo)}}
                 <option value="{{cod_cargo}}">{{nombre}}</option>
