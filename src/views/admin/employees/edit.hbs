@@ -9,44 +9,49 @@
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Nombre(s)</label>
           <input type="text" name="nombres" value="{{empleado.nombres}}" required 
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
         <!-- Apellido -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Apellido(s)</label>
           <input type="text" name="apellidos" value="{{empleado.apellidos}}" required 
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
         <!-- CI -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Cédula de Identidad</label>
           <input type="text" name="ci" value="{{empleado.ci}}" required 
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
         <!-- Celular -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Celular</label>
           <input type="tel" name="celular" value="{{empleado.celular}}" required 
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Correo Electrónico</label>
           <input type="email" name="email" value="{{empleado.email}}" required 
-                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
         <!-- Cargo -->
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Cargo</label>
-          <select name="cod_cargo" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+          <select name="cod_cargo" required
+                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333]">
+            {{!-- Mostrar opción actual seleccionada --}}
             <option value="{{empleado.cod_cargo}}" selected>{{empleado.cargo_nombre}}</option>
+            {{!-- Mostrar los demás cargos sin repetir el actual --}}
             {{#each cargos}}
-              <option value="{{cod_cargo}}">{{nombre}}</option>
+              {{#unless (eq cod_cargo ../empleado.cod_cargo)}}
+                <option value="{{cod_cargo}}">{{nombre}}</option>
+              {{/unless}}
             {{/each}}
           </select>
         </div>
@@ -55,18 +60,19 @@
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-[#333333] mb-1">Dirección</label>
           <textarea name="direccion" placeholder="Dirección" 
-                    class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent h-24 shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0]">{{empleado.direccion}}</textarea>
+                    class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent h-24 shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">{{empleado.direccion}}</textarea>
         </div>
 
         <!-- Foto -->
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-[#333333] mb-1">Foto</label>
-          <div class="flex items-center space-x-4">
-            <div class="flex-1">
-              <input type="file" name="foto" accept="image/*" 
-                     class="w-full text-sm text-[#333333] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#E8EBE8] file:text-[#333333] hover:file:bg-[#D1D5D8]">
+          {{#if empleado.foto}}
+            <div class="mb-3">
+              <img src="/image/employees/{{empleado.foto}}" alt="Foto de {{empleado.nombres}}" class="w-32 h-32 object-cover rounded-md border border-gray-300">
             </div>
-          </div>
+          {{/if}}
+          <input type="file" name="foto" accept="image/*" 
+                 class="w-full text-sm text-[#333333] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#E8EBE8] file:text-[#333333] hover:file:bg-[#D1D5D8]">
           <p class="mt-1 text-xs text-[#666666]">Formatos aceptados: JPG, PNG</p>
         </div>
       </div>

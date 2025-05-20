@@ -242,7 +242,7 @@ async function deleteProduct(req, res) {
     await query('DELETE FROM PRODUCTO WHERE cod_producto = ?', [id]);
 
     if (producto.foto) {
-      const filePath = path.join(__dirname, '..', 'public', 'images', 'products', producto.foto);
+      const filePath = path.join(__dirname, '..', 'public', 'image', 'products', producto.foto);
       await safeDeleteFile(filePath);
     }
 

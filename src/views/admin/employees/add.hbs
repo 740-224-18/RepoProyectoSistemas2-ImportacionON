@@ -4,6 +4,12 @@
   <div class="bg-[#F8F8F8] rounded-xl shadow-lg overflow-hidden p-6 max-w-3xl mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-[#333333] border-b pb-2 border-[#E8EBE8]">Agregar Empleado</h2>
 
+    {{#if error}}
+      <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+        {{error}}
+      </div>
+    {{/if}}
+
     <form action="/admin/employees/add" method="POST" enctype="multipart/form-data" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
@@ -39,6 +45,20 @@
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Correo Electrónico</label>
           <input type="email" name="email" placeholder="Correo" required
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Contraseña</label>
+          <input type="password" name="password" placeholder="Contraseña" required
+                 class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div>
+          <label class="block text-sm font-medium text-[#333333] mb-1">Confirmar Contraseña</label>
+          <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required
                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333] placeholder-[#A0A0A0]">
         </div>
 
@@ -80,49 +100,50 @@
       </div>
     </form>
 
-    <!-- Modal para agregar nuevo cargo -->
-    <div class="mt-8">
-      <button type="button" onclick="toggleModal('addCargoModal')"
-              class="w-full flex items-center justify-center space-x-2 bg-[#333333] text-white py-2 px-4 rounded-lg hover:bg-[#444444] transition-all duration-200">
-        <i class="fas fa-plus"></i>
-        <span>Agregar Nuevo Cargo</span>
-      </button>
+ <!-- Modal para agregar nuevo cargo -->
+<div class="mt-8">
+  <button type="button" onclick="toggleModal('addCargoModal')"
+          class="w-full flex items-center justify-center space-x-2 bg-[#333333] text-white py-2 px-4 rounded-lg hover:bg-[#444444] transition-all duration-200">
+    <i class="fas fa-plus"></i>
+    <span>Agregar Nuevo Cargo</span>
+  </button>
 
-      <!-- Modal -->
-      <div id="addCargoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-          <div class="p-6">
-            <h3 class="text-lg font-bold text-black mb-4">Agregar Nuevo Cargo</h3>
-            <form action="/admin/employees/add-cargo" method="POST" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-black mb-1">Nombre del Cargo</label>
-                <input type="text" name="nombre" required
-                       class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent bg-white text-[#333333] placeholder-[#A0A0A0]">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-black mb-1">Salario</label>
-                <input type="number" name="salario" required step="0.01"
-                       class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent bg-white text-[#333333] placeholder-[#A0A0A0]">
-              </div>
-              <div class="flex justify-end space-x-3 pt-2">
-                <button type="button" onclick="toggleModal('addCargoModal')"
-                        class="px-4 py-2 text-black hover:bg-[#E8EBE8] rounded-lg transition-all duration-200">
-                  Cancelar
-                </button>
-                <button type="submit"
-                        class="px-4 py-2 bg-[#B90504] text-white rounded-lg hover:bg-[#990100] transition-all duration-200">
-                  Guardar Cargo
-                </button>
-              </div>
-            </form>
+  <!-- Modal -->
+  <div id="addCargoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="p-6">
+        <h3 class="text-lg font-bold text-black mb-4">Agregar Nuevo Cargo</h3>
+        <form action="/admin/employees/add-cargo" method="POST" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-black mb-1">Nombre del Cargo</label>
+            <input type="text" name="nombre" required
+                   class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent bg-white text-[#333333] placeholder-[#A0A0A0]">
           </div>
-        </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-1">Salario</label>
+            <input type="number" name="salario" required step="0.01"
+                   class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent bg-white text-[#333333] placeholder-[#A0A0A0]">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-1">Descripción</label>
+            <textarea name="descripcion" rows="3" placeholder="Descripción del cargo"
+                      class="w-full p-2 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent bg-white text-[#333333] placeholder-[#A0A0A0]"></textarea>
+          </div>
+          <div class="flex justify-end space-x-3 pt-2">
+            <button type="button" onclick="toggleModal('addCargoModal')"
+                    class="px-4 py-2 text-black hover:bg-[#E8EBE8] rounded-lg transition-all duration-200">
+              Cancelar
+            </button>
+            <button type="submit"
+                    class="px-4 py-2 bg-[#B90504] text-white rounded-lg hover:bg-[#990100] transition-all duration-200">
+              Guardar Cargo
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-
   </div>
 </div>
-
 <script>
   function toggleModal(modalId) {
     const modal = document.getElementById(modalId);
