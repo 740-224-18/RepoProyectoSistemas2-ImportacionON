@@ -26,10 +26,24 @@
                class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
       </div>
 
+      <!-- Precio de compra (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Precio de Compra <span class="text-xs text-gray-400">(opcional)</span></label>
+        <input type="number" name="precio_compra" placeholder="Precio de compra" step="0.01"
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
+
       <!-- Stock -->
       <div>
         <label class="block text-sm font-medium text-[#333333] mb-1">Stock</label>
         <input type="number" name="stock" placeholder="Stock" required 
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
+
+      <!-- Stock mínimo (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Stock Mínimo <span class="text-xs text-gray-400">(opcional)</span></label>
+        <input type="number" name="stock_minimo" placeholder="Stock mínimo" min="0"
                class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
       </div>
 
@@ -40,6 +54,17 @@
           <option value="" disabled selected>Seleccione una Categoría</option>
           {{#each categorias}}
             <option value="{{cod_cat}}">{{nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <!-- Proveedor (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Proveedor <span class="text-xs text-gray-400">(opcional)</span></label>
+        <select name="proveedor_id" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+          <option value="" selected>Seleccione un Proveedor</option>
+          {{#each proveedores}}
+            <option value="{{cod_proveedor}}">{{nombre}}</option>
           {{/each}}
         </select>
       </div>

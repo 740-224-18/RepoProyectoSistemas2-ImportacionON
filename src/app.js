@@ -9,6 +9,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const productRoutes = require('./routes/productRoutes');
 const clientProductRoutes = require('./routes/clientProductRoutes'); 
 const path = require('path');
+const flash = require('connect-flash');
 
 const app = express();
 app.set('port', 4000);
@@ -27,6 +28,8 @@ app.use(session({
     }
 }));
 
+app.use(flash());
+
 // Conexión a MySQL
 app.use(myconnection(mysql, {
     host: '127.0.0.1',
@@ -35,6 +38,14 @@ app.use(myconnection(mysql, {
     port: 3306,
     database: 'importadoraon'
 }, 'single'));
+
+
+// Middleware para pasar mensajes flash a las vistas
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
 
 // Archivos estáticos para fotos subidas
 app.use('/images/employees', express.static(path.join(__dirname, 'public/image/employees')));

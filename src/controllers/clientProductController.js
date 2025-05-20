@@ -2,24 +2,37 @@ const path = require('path');
 
 // Listar productos para clientes con búsqueda
 function listClientProducts(req, res) {
-  const searchQuery = req.query.search || '';  // Captura la búsqueda de la URL
+  let searchQuery = req.query.search || '';  // Captura la búsqueda de la URL
+  const searchParam = `%${searchQuery}%`;    // Para usar en LIKE
+
   req.getConnection((err, conn) => {
-    let query = 'SELECT * FROM PRODUCTO INNER JOIN CATEGORIA ON PRODUCTO.cod_cat = CATEGORIA.cod_cat';
-    if (searchQuery) {
-      query += ' WHERE PRODUCTO.nombre LIKE ?';
-      searchQuery = `%${searchQuery}%`;  // Realiza la búsqueda con comodines
+    if (err) {
+      return res.status(500).send('Error en la conexión a la base de datos');
     }
 
-    conn.query(query, [searchQuery], (err, productos) => {
+    let query = `
+      SELECT PRODUCTO.*, CATEGORIA.nombre AS categoria_nombre 
+      FROM PRODUCTO 
+      INNER JOIN CATEGORIA ON PRODUCTO.cod_cat = CATEGORIA.cod_cat
+    `;
+
+    const params = [];
+
+    if (searchQuery) {
+      query += ' WHERE PRODUCTO.nombre LIKE ?';
+      params.push(searchParam);
+    }
+
+    conn.query(query, params, (err, productos) => {
       if (err) {
         return res.status(500).send('Error al obtener productos');
       }
-      
+
       res.render('pages/productos', {
         productos,
         searchQuery,
         active: { productos: true },
-        nombre: req.session.nombre
+        nombre: req.session.nombre || null
       });
     });
   });

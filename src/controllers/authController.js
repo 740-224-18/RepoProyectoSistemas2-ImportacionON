@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const util = require('util');
 
-// Mostrar login
 function login(req, res) {
   if (!req.session.loggedin) {
     res.render('auth/login');
@@ -10,9 +9,12 @@ function login(req, res) {
   }
 }
 
-// Procesar autenticación
 async function auth(req, res) {
   const data = req.body;
+
+  if (!data.email || !data.password) {
+    return res.render('auth/login', { error: 'Por favor ingrese email y contraseña' });
+  }
 
   try {
     const getConnection = util.promisify(req.getConnection).bind(req);
@@ -40,30 +42,19 @@ async function auth(req, res) {
       return res.render('auth/login', { error: 'Contraseña incorrecta' });
     }
 
-    // Obtener si es cliente
     const clienteResult = await query('SELECT cod_cliente FROM CLIENTE WHERE usuario_id = ?', [usuario.cod_registro]);
     const cliente_id = clienteResult.length > 0 ? clienteResult[0].cod_cliente : null;
 
-    // Guardar en sesión
+    //const empleado = await query('SELECT cod_empleado FROM EMPLEADO WHERE usuario_id = ?', [usuario.cod_registro]);
+    //const empleado_id = empleado.length > 0 ? empleado[0].cod_empleado : null;
+
     req.session.loggedin = true;
     req.session.nombre = usuario.usuario;
     req.session.role = usuario.rol_id;
     req.session.rolNombre = usuario.nombre_rol;
     req.session.cod_registro = usuario.cod_registro;
     req.session.cliente_id = cliente_id;
-
-    // Obtener si es empleado
-    const empleado = await query('SELECT cod_empleado FROM EMPLEADO WHERE usuario_id = ?', [usuario.cod_registro]);
-    const empleado_id = empleado.length > 0 ? empleado[0].cod_empleado : null;
-
-    // Guardar en sesión
-    req.session.loggedin = true;
-    req.session.nombre = usuario.usuario;
-    req.session.role = usuario.rol_id;
-    req.session.rolNombre = usuario.nombre_rol;
-    req.session.cod_registro = usuario.cod_registro;
-    req.session.cliente_id = cliente_id;
-    req.session.empleado_id = empleado_id; // Guardamos si es empleado
+    //req.session.empleado_id = empleado_id;
 
 
     // Redireccionar según rol
@@ -81,7 +72,6 @@ async function auth(req, res) {
   }
 }
 
-// Mostrar formulario de registro
 function register(req, res) {
   if (!req.session.loggedin) {
     res.render('auth/register');
@@ -90,7 +80,6 @@ function register(req, res) {
   }
 }
 
-// Guardar nuevo usuario
 async function storeUser(req, res) {
   const data = req.body;
 

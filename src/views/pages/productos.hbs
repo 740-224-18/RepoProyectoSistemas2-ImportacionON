@@ -9,6 +9,7 @@
         value="{{searchQuery}}" 
         placeholder="Buscar productos..." 
         class="p-2 w-full border rounded-lg"
+        aria-label="Buscar productos"
       />
       <button type="submit" class="btn-gold ml-2 py-2 px-4 rounded-full">Buscar</button>
     </form>
@@ -18,17 +19,26 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     {{#each productos}}
       <div class="product-card bg-black shadow-lg rounded-lg p-4 text-center">
-        <img src="/images/products/{{foto}}" alt="{{nombre}}" class="w-full h-64 object-cover rounded-lg mb-4" />
+        {{#if foto}}
+          <img src="/images/products/{{foto}}" alt="Imagen de {{nombre}}" class="w-full h-64 object-cover rounded-lg mb-4" />
+        {{else}}
+          <div class="w-full h-64 bg-gray-700 flex items-center justify-center rounded-lg mb-4 text-white italic">
+            Sin imagen disponible
+          </div>
+        {{/if}}
         <h3 class="text-xl font-semibold text-[#0F172A]">{{nombre}}</h3>
-        <p class="text-[#F8FAFC]/80 mb-4">{{descripcion}}</p>
+        <p class="text-[#F8FAFC]/80 mb-2">{{descripcion}}</p>
+        {{#if categoria_nombre}}
+          <p class="text-sm text-gray-500 mb-2">Categoría: {{categoria_nombre}}</p>
+        {{/if}}
         <p class="text-[#FFD700] font-bold mb-4">Bs. {{precio}}</p>
-        <button class="bg-[#FFD700] text-[#0F172A] py-2 px-4 rounded-full w-full mb-2">Agregar al Carrito</button>
+        <button class="bg-[#FFD700] text-[#0F172A] py-2 px-4 rounded-full w-full mb-2" type="button" aria-label="Agregar {{nombre}} al carrito">Agregar al Carrito</button>
       </div>
     {{/each}}
   </div>
 
   {{#if productos.length}}
-    <p class="mt-6 text-sm text-black-600">Se han encontrado {{productos.length}} productos.</p>
+    <p class="mt-6 text-sm text-gray-600">Se han encontrado {{productos.length}} productos.</p>
   {{else}}
     <p class="mt-6 text-blue-500">No se encontraron productos.</p>
   {{/if}}
