@@ -1,9 +1,8 @@
 const path = require('path');
 
-// Listar productos para clientes con búsqueda
 function listClientProducts(req, res) {
-  let searchQuery = req.query.search || '';  // Captura la búsqueda de la URL
-  const searchParam = `%${searchQuery}%`;    // Para usar en LIKE
+  let searchQuery = req.query.search || '';  
+  const searchParam = `%${searchQuery}%`;    
 
   req.getConnection((err, conn) => {
     if (err) {

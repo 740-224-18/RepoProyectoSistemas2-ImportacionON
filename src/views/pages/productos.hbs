@@ -13,7 +13,10 @@
       />
       <button type="submit" class="btn-gold ml-2 py-2 px-4 rounded-full">Buscar</button>
     </form>
-    <a href="/register/client" class="btn-gold py-2 px-4 rounded-full">Registrarse como Cliente</a>
+    <div class="flex space-x-4">
+     <!-- <a href="/register/client" class="btn-gold py-2 px-4 rounded-full">Registrarse como Cliente</a> -->
+      <a href="/carrito" class="btn-gold py-2 px-4 rounded-full">Ver Carrito</a>
+    </div>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -32,13 +35,19 @@
           <p class="text-sm text-gray-500 mb-2">Categoría: {{categoria_nombre}}</p>
         {{/if}}
         <p class="text-[#FFD700] font-bold mb-4">Bs. {{precio}}</p>
-        <button class="bg-[#FFD700] text-[#0F172A] py-2 px-4 rounded-full w-full mb-2" type="button" aria-label="Agregar {{nombre}} al carrito">Agregar al Carrito</button>
+
+        <form action="/carrito/agregar" method="POST" class="mb-2">
+          <input type="hidden" name="producto_id" value="{{cod_producto}}" />
+          <button class="bg-[#FFD700] text-[#0F172A] py-2 px-4 rounded-full w-full" type="submit" aria-label="Agregar {{nombre}} al carrito">
+            Agregar al Carrito
+          </button>
+        </form>
       </div>
     {{/each}}
   </div>
 
   {{#if productos.length}}
-    <p class="mt-6 text-sm text-gray-600">Se han encontrado {{productos.length}} productos.</p>
+    <p class="mt-6 text-sm text-black">Se han encontrado {{productos.length}} productos.</p>
   {{else}}
     <p class="mt-6 text-blue-500">No se encontraron productos.</p>
   {{/if}}

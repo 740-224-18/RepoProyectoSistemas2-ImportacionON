@@ -10,7 +10,8 @@ const path = require('path');
 const authRoutes = require('./routes/authRoutes'); 
 const employeeRoutes = require('./routes/employeeRoutes');
 const productRoutes = require('./routes/productRoutes');
-const clientProductRoutes = require('./routes/clientProductRoutes'); 
+const clientProductRoutes = require('./routes/clientProductRoutes');
+const carritoRoutes = require('./routes/carritoRoutes'); 
 
 // Middlewares de autenticación
 const { isLoggedIn, isNotLoggedIn, isAdmin, isEmpleado } = require('./middlewares/authMiddleware');
@@ -84,6 +85,8 @@ app.use('/', authRoutes);
 app.use('/admin/employees', isLoggedIn, isAdmin, employeeRoutes);
 app.use('/admin/products', isLoggedIn, isAdmin, productRoutes);
 app.use('/productos', clientProductRoutes);
+app.use('/carrito', carritoRoutes);
+
 
 // Ruta raíz con redirección según rol
 app.get('/', (req, res) => {

@@ -104,7 +104,7 @@ CREATE TABLE DIRECCION_CLIENTE (
 
 CREATE TABLE EMPLEADO (
     cod_empleado INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_id INT UNIQUE, -- clave foránea a REGISTRO
+    usuario_id INT UNIQUE, 
     nombres VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
     ci VARCHAR(20) UNIQUE,
