@@ -32,8 +32,11 @@ CREATE TABLE EMPRESA (
     nit VARCHAR(30),
     telefono VARCHAR(30),
     direccion TEXT,
-    email VARCHAR(100)
+    email VARCHAR(100),
+    pais_id INT,
+    FOREIGN KEY (pais_id) REFERENCES PAIS(cod_pais)
 );
+
 
 CREATE TABLE CARGO (
     cod_cargo INT PRIMARY KEY AUTO_INCREMENT,
@@ -99,9 +102,6 @@ CREATE TABLE DIRECCION_CLIENTE (
     FOREIGN KEY (pais_id) REFERENCES PAIS(cod_pais)
 );
 
-ALTER TABLE empleado
-ADD COLUMN email VARCHAR(100)
-
 CREATE TABLE EMPLEADO (
     cod_empleado INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT UNIQUE, -- clave foránea a REGISTRO
@@ -137,6 +137,7 @@ CREATE TABLE PROVEEDOR (
     empresa_id INT,
     representante VARCHAR(100),
     FOREIGN KEY (empresa_id) REFERENCES EMPRESA(cod_empresa)
+
 );
 
 -- Tabla Categoría
@@ -144,7 +145,6 @@ CREATE TABLE CATEGORIA (
     cod_cat INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
     descripcion TEXT,
-    imagen VARCHAR(255),
     activa BOOLEAN DEFAULT TRUE
 );
 
@@ -155,8 +155,8 @@ CREATE TABLE PRODUCTO (
     descripcion TEXT,
     precio DECIMAL(10,2),
     precio_compra DECIMAL(10,2),
-    stock INT DEFAULT 0,
-    stock_minimo INT DEFAULT 5,
+    stock INT,
+    stock_minimo INT,
     foto TEXT,
     cod_cat INT,
     proveedor_id INT,

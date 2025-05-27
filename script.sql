@@ -37,3 +37,7 @@ INSERT INTO GENERO (nombre)VALUES
 ('Masculino'),
 ('Femenino'),
 ('Otro');
+
+INSERT INTO EMPRESA (nombre, nit, telefono, direccion, email, pais_id) VALUES
+('EL CEIBO', '123456789', '22841078', 'Av. Juan Pablo II #2560 (Final Autopista) El Alto, La Paz','agencia.elalto@elceibo.com', 1);
+

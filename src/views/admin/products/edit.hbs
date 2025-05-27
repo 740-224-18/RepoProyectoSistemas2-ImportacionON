@@ -1,4 +1,5 @@
 {{!< ../layouts/main}}
+
 <div class="container mx-auto p-6">
   <div class="bg-[#F8F8F8] rounded-xl shadow-lg overflow-hidden p-6 max-w-3xl mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-[#333333] border-b pb-2 border-[#E8EBE8]">Editar Producto</h2>
@@ -24,10 +25,24 @@
                class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
       </div>
 
+      <!-- Precio de compra (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Precio de Compra <span class="text-xs text-gray-400">(opcional)</span></label>
+        <input type="number" name="precio_compra" value="{{producto.precio_compra}}" step="0.01"
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
+
       <!-- Stock -->
       <div>
         <label class="block text-sm font-medium text-[#333333] mb-1">Stock</label>
         <input type="number" name="stock" value="{{producto.stock}}" required 
+               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+      </div>
+
+      <!-- Stock mínimo (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Stock Mínimo <span class="text-xs text-gray-400">(opcional)</span></label>
+        <input type="number" name="stock_minimo" value="{{producto.stock_minimo}}" min="0"
                class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
       </div>
 
@@ -38,6 +53,17 @@
           <option value="" disabled>Seleccione una Categoría</option>
           {{#each categorias}}
             <option value="{{cod_cat}}" {{#if (eq cod_cat ../producto.cod_cat)}}selected{{/if}}>{{nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <!-- Proveedor (opcional) -->
+      <div>
+        <label class="block text-sm font-medium text-[#333333] mb-1">Proveedor <span class="text-xs text-gray-400">(opcional)</span></label>
+        <select name="proveedor_id" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+          <option value="" selected>Seleccione un Proveedor</option>
+          {{#each proveedores}}
+            <option value="{{cod_proveedor}}" {{#if (eq cod_proveedor ../producto.proveedor_id)}}selected{{/if}}>{{nombre}}</option>
           {{/each}}
         </select>
       </div>
