@@ -1,92 +1,156 @@
-/* ----- Paleta de Colores ----- */
+/* ----- Paleta de Colores Oficial ----- */
 :root {
-    --blanco-claro: #F6F6F6;
-    --gris-claro: #E8E8E8;
-    --gris-oscuro: #333333;
+    --azul-oscuro: #0A1122;
+    --azul-marino: #0F172A;
+    --plomo-oscuro: #333333;
+    --oro: #FFD700;
+    --oro-claro: #FFAA00;
+    --blanco-oscuro: #E8E8E8;
+    --texto-claro: #F6F6F6;
+    --rojo: #b90504;
     --rojo-oscuro: #990100;
-    --rojo-medio: #B90504;
-    --beige-suave: #F2E1B3;
-    --amarillo-dorado: #FFD700;
-    --negro-suave: #222222;
-    --gris-calido: #D1D1D1;
 }
 
-/* ----- Colores de Fondo, Texto y Elementos ----- */
+/* ----- Fondo y texto principal ----- */
 body {
-    background-color: var(--blanco-claro);
-    color: var(--gris-oscuro);
+    background: linear-gradient(135deg, var(--blanco-oscuro) 0%, var(--texto-claro) 100%);
+    color: var(--plomo-oscuro);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
 }
 
-.header-gradient {
-    background: linear-gradient(90deg, var(--rojo-medio) 0%, var(--rojo-oscuro) 100%);
+/* ----- Header y Navbar ----- */
+header, .header-gradient, nav {
+    background: linear-gradient(90deg, var(--rojo-oscuro) 0%, var(--rojo) 80%, var(--oro) 100%);
+    color: var(--texto-claro);
+    box-shadow: 0 4px 16px rgba(10,17,34,0.08);
 }
 
-.sidebar {
-    background-color: var(--gris-oscuro);
-    color: var(--blanco-claro);
+nav a, .nav-link-gold {
+    color: var(--oro);
+    border: 2px solid var(--oro);
+    border-radius: 6px;
+    padding: 0.5em 1em;
+    font-weight: 500;
+    background: transparent;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
 }
 
-.sidebar a {
-    color: var(--blanco-claro);
+nav a:hover, .nav-link-gold:hover {
+    background: var(--oro);
+    color: var(--azul-marino);
+    box-shadow: 0 2px 8px rgba(255,215,0,0.12);
+    transform: translateY(-2px) scale(1.04);
 }
 
-.sidebar a:hover {
-    background-color: var(--rojo-oscuro);
-}
-
-.btn-primary {
-    background: var(--rojo-medio);
-    color: var(--blanco-claro);
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: var(--rojo-oscuro);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(209, 0, 0, 0.3);
-}
-
-.footer-gradient {
-    background: linear-gradient(90deg, var(--gris-oscuro) 0%, var(--negro-suave) 100%);
-}
-
-.input-focus:focus {
-    border-color: var(--rojo-medio);
-    box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.1);
-}
-
-/* ----- Colores Complementarios ----- */
-.card-highlight {
-    background-color: var(--beige-suave);
-}
-
+/* ----- Botones ----- */
 .btn-gold {
-    background: linear-gradient(to right, var(--amarillo-dorado), var(--rojo-medio));
-    color: var(--negro-suave);
-    font-weight: 600;
-    transition: all 0.2s ease;
+    background: linear-gradient(90deg, var(--oro) 0%, var(--oro-claro) 100%);
+    color: var(--azul-marino);
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255,215,0,0.10);
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
 }
 
 .btn-gold:hover {
-    background: linear-gradient(to right, var(--rojo-medio), var(--amarillo-dorado));
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(255, 215, 0, 0.2);
-}
-
-.text-secondary {
-    color: var(--gris-calido);
-}
-
-.text-primary {
+    background: linear-gradient(90deg, var(--oro-claro) 0%, var(--oro) 100%);
     color: var(--rojo-oscuro);
+    box-shadow: 0 4px 16px rgba(255,215,0,0.18);
+    transform: translateY(-2px) scale(1.03);
 }
 
-.card-hover:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
+.btn-red {
+    background: linear-gradient(90deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+    color: var(--texto-claro);
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
 }
 
-/* ----- Animaciones y Transiciones (sin cambios) ----- */
+.btn-red:hover {
+    background: linear-gradient(90deg, var(--rojo-oscuro) 0%, var(--rojo) 100%);
+    color: var(--oro);
+    box-shadow: 0 4px 16px rgba(185,5,4,0.18);
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* ----- Cards y Secciones ----- */
+.card, .bg-white, .bg-white\/80 {
+    background: linear-gradient(120deg, var(--texto-claro) 80%, var(--blanco-oscuro) 100%);
+    border-radius: 14px;
+    box-shadow: 0 6px 24px rgba(10,17,34,0.08);
+    border: 1px solid var(--oro);
+}
+
+.card-title, h1, h2, h3 {
+    color: var(--rojo-oscuro);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.card-footer {
+    background: var(--blanco-oscuro);
+    color: var(--plomo-oscuro);
+    border-top: 1px solid var(--oro);
+}
+
+/* ----- Inputs y Formularios ----- */
+input, textarea, select {
+    border-radius: 6px;
+    background: var(--blanco-oscuro);
+    border: 1.5px solid var(--oro);
+    padding: 10px;
+    color: var(--plomo-oscuro);
+    font-size: 1em;
+    transition: border 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--rojo);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--oro-claro);
+}
+
+/* ----- Footer ----- */
+footer, .footer-gradient {
+    background: linear-gradient(90deg, var(--azul-oscuro) 0%, var(--azul-marino) 100%);
+    color: var(--oro);
+    text-align: center;
+    padding: 24px 0;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+}
+
+footer a {
+    color: var(--oro-claro);
+    text-decoration: underline dotted;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: var(--rojo);
+}
+
+/* ----- Animaciones y Transiciones ----- */
+.transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shadow-gold {
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.12);
+}
+
+.menu-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
 .floating {
     animation: floating 3s ease-in-out infinite;
 }
@@ -97,85 +161,24 @@ body {
     100% { transform: translateY(0px); }
 }
 
-/* Transiciones suaves para botones */
-.transition-smooth {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* ----- Avatar y Dropdown ----- */
+#user-menu-wrapper .rounded-full {
+    background: linear-gradient(135deg, var(--oro) 60%, var(--oro-claro) 100%);
+    color: var(--azul-marino);
+    border: 2px solid var(--oro);
 }
 
-/* ----- Ajustes para inputs y bordes ----- */
-input, textarea, select {
-    border-radius: 5px;
-    background-color: var(--gris-claro);
-    border: 1px solid var(--gris-oscuro);
-    padding: 10px;
-    color: var(--gris-oscuro);
+#userDropdown {
+    border: 1.5px solid var(--oro);
+    box-shadow: 0 8px 32px rgba(255,215,0,0.08);
 }
 
-/* ----- Sección de Cards, Botones y más ---- */
-.card {
-    background-color: var(--blanco-claro);
+/* ----- Otros detalles ----- */
+::-webkit-scrollbar-thumb {
+    background: var(--oro);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-.card-title {
-    color: var(--gris-oscuro);
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.card-body {
-    color: var(--gris-calido);
-}
-
-.card-footer {
-    background-color: var(--gris-claro);
-}
-
-/* ----- Animaciones para elementos como menú y botones ----- */
-.menu-slide-in {
-    animation: slide-in 0.3s ease-out;
-}
-
-@keyframes slide-in {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-/* ----- Títulos ----- */
-h1, h2, h3 {
-    color: var(--rojo-oscuro);
-}
-
-h4, h5, h6 {
-    color: var(--gris-oscuro);
-}
-
-
-header {
-    background: var(--rojo-medio);
-    color: var(--blanco-claro);
-}
-
-footer {
-    background: var(--gris-oscuro);
-    color: var(--blanco-claro);
-    text-align: center;
-    padding: 20px 0;
-}
-
-footer a {
-    color: var(--amarillo-dorado);
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-.footer-gradient {
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+::-webkit-scrollbar {
+    background: var(--blanco-oscuro);
+    width: 8px;
 }

@@ -1,55 +1,68 @@
 {{!< ../layouts/main}}
 
-<div class="p-6 bg-black rounded shadow text-white">
-  <a href="/admin/dashboard" class="mt-4 inline-block bg-green-600 hover:bg-green-700 transition text-white py-2 px-4 rounded">
-    ← Volver al Dashboard
-  </a>
-
-  <h2 class="text-2xl font-bold my-6 border-b border-gray-600 pb-2">Lista de Empleados</h2>
+<div class="p-8 bg-white rounded-xl shadow-lg max-w-7xl mx-auto">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+    <h2 class="text-3xl font-bold text-[#0F172A]">Lista de Empleados</h2>
+    <div class="flex gap-3">
+      <a href="/admin/dashboard"
+         class="inline-flex items-center gap-2 bg-[#0F172A] text-[#FFD700] hover:bg-[#FFD700] hover:text-[#0F172A] border border-[#0F172A] transition-all duration-200 px-4 py-2 rounded-lg font-semibold shadow">
+        <i class="fas fa-arrow-left"></i> Dashboard
+      </a>
+      <a href="/admin/employees/add"
+         class="inline-flex items-center gap-2 bg-[#0F172A] text-[#FFD700] hover:bg-[#FFD700] hover:text-[#0F172A] border border-[#0F172A] transition-all duration-200 px-4 py-2 rounded-lg font-semibold shadow">
+        <i class="fas fa-user-plus"></i> Nuevo Empleado
+      </a>
+    </div>
+  </div>
 
   <div class="overflow-x-auto">
-    <table class="min-w-full table-auto border-collapse border border-gray-700">
+    <table class="min-w-full table-auto border-collapse rounded-xl overflow-hidden shadow border border-[#FFD700]">
       <thead>
-        <tr class="bg-gray-800 text-left text-sm uppercase text-gray-300">
-          <th class="border border-gray-600 px-4 py-2">Foto</th>
-          <th class="border border-gray-600 px-4 py-2">Nombre</th>
-          <th class="border border-gray-600 px-4 py-2">Apellido</th>
-          <th class="border border-gray-600 px-4 py-2">Cédula</th>
-          <th class="border border-gray-600 px-4 py-2">Celular</th>
-          <th class="border border-gray-600 px-4 py-2">Dirección</th>
-          <th class="border border-gray-600 px-4 py-2">Email</th>
-          <th class="border border-gray-600 px-4 py-2">Cargo</th>
-          <th class="border border-gray-600 px-4 py-2">Acciones</th>
+        <tr class="bg-[#0F172A] text-[#FFD700] text-sm uppercase">
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Foto</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Nombre</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Apellido</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Cédula</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Celular</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Dirección</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Email</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Cargo</th>
+          <th class="border border-[#FFD700] px-4 py-2 font-bold">Acciones</th>
         </tr>
       </thead>
       <tbody>
         {{#each empleados}}
-          <tr class="bg-gray-900 even:bg-gray-800">
-            <td class="border border-gray-700 px-4 py-2">
+          <tr class="hover:bg-[#FFFBEA] transition">
+            <td class="border border-[#FFD700] px-4 py-2 text-center">
               {{#if foto}}
-                <img src="/images/employees/{{foto}}" alt="Foto de {{nombres}}" class="w-12 h-12 object-cover rounded-full mx-auto">
+                <img src="/images/employees/{{foto}}" alt="Foto de {{nombres}}" class="w-12 h-12 object-cover rounded-full mx-auto border-2 border-[#FFD700] shadow">
               {{else}}
                 <span class="text-gray-400 italic block text-center">Sin foto</span>
               {{/if}}
             </td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{nombres}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{apellidos}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{ci}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{celular}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{direccion}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle break-words max-w-xs">{{email}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle">{{cargo_nombre}}</td>
-            <td class="border border-gray-700 px-4 py-2 align-middle whitespace-nowrap">
-              <a href="/admin/employees/edit/{{cod_empleado}}" class="text-blue-400 hover:underline mr-3" aria-label="Editar {{nombres}} {{apellidos}}">Editar</a>
-              <a href="/admin/employees/delete/{{cod_empleado}}" class="text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?')" aria-label="Eliminar {{nombres}} {{apellidos}}">Eliminar</a>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A] font-semibold">{{nombres}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A]">{{apellidos}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A]">{{ci}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A]">{{celular}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A]">{{direccion}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle break-words max-w-xs text-[#0F172A]">{{email}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle text-[#0F172A]">{{cargo_nombre}}</td>
+            <td class="border border-[#FFD700] px-4 py-2 align-middle whitespace-nowrap">
+              <a href="/admin/employees/edit/{{cod_empleado}}"
+                 class="inline-flex items-center gap-1 px-3 py-1 rounded bg-[#FFD700] text-[#0F172A] font-bold hover:bg-[#FFAA00] transition shadow"
+                 aria-label="Editar {{nombres}} {{apellidos}}">
+                <i class="fas fa-edit"></i> Editar
+              </a>
+              <a href="/admin/employees/delete/{{cod_empleado}}"
+                 class="inline-flex items-center gap-1 px-3 py-1 rounded bg-[#b90504] text-[#0F172A] font-bold hover:bg-[#990100] transition shadow ml-2"
+                 onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?')"
+                 aria-label="Eliminar {{nombres}} {{apellidos}}">
+                <i class="fas fa-trash-alt bo "></i> Eliminar
+              </a>
             </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
   </div>
-
-  <a href="/admin/employees/add" class="mt-6 inline-block bg-green-600 hover:bg-green-700 transition text-white py-3 px-6 rounded font-semibold">
-    + Agregar Nuevo Empleado
-  </a>
 </div>

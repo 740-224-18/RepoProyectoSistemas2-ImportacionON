@@ -84,6 +84,26 @@ app.engine('.hbs', engine({
           for (let i = 0; i < n; ++i)
             accum += block.fn(i);
           return accum;
+        },
+        // Helper ifCond para condicionales avanzados
+        ifCond: function (v1, operator, v2, options) {
+          if (!options || typeof options.fn !== 'function' || typeof options.inverse !== 'function') {
+            // Si options no existe o no es válido, retorna vacío para evitar el error
+            return '';
+          }
+          switch (operator) {
+            case '==': return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===': return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '!=': return (v1 != v2) ? options.fn(this) : options.inverse(this);
+            case '!==': return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+            case '<': return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=': return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>': return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=': return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&': return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||': return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default: return options.inverse(this);
+          }
         }
     }
 }));

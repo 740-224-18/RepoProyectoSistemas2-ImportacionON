@@ -62,15 +62,17 @@ async function showAddForm(req, res) {
     const query = util.promisify(conn.query).bind(conn);
 
     const cargos = await query('SELECT * FROM CARGO');
+    const generos = await query('SELECT * FROM GENERO'); // <-- AGREGADO
 
     res.render('admin/employees/add', {
       cargos,
+      generos, // <-- AGREGADO
       active: { empleados: true },
       nombre: req.session.nombre
     });
   } catch (err) {
-    console.error('Error al obtener cargos:', err);
-    res.status(500).send('Error al obtener cargos');
+    console.error('Error al obtener cargos o géneros:', err);
+    res.status(500).send('Error al obtener cargos o géneros');
   }
 }
 
@@ -83,17 +85,59 @@ async function saveEmployee(req, res) {
     const getConnection = util.promisify(req.getConnection).bind(req);
     const conn = await getConnection();
     const query = util.promisify(conn.query).bind(conn);
-    const fechaNacimiento = new Date(req.body.fecha_nacimiento);
+
+    // Validar campos obligatorios
+    if (!data.nombres || !data.apellidos || !data.ci || !data.celular ||
+        !data.fecha_nacimiento || !data.genero_id || !data.email ||
+        !data.password || !data.confirm_password || !data.cod_cargo) {
+      const cargos = await query('SELECT * FROM CARGO');
+      const generos = await query('SELECT * FROM GENERO');
+      return res.render('admin/employees/add', {
+        error: 'Todos los campos son obligatorios.',
+        cargos,
+        generos,
+        nombre: req.session.nombre,
+        active: { empleados: true }
+      });
+    }
+
+    // Validar que las contraseñas coincidan
+    if (data.password !== data.confirm_password) {
+      const cargos = await query('SELECT * FROM CARGO');
+      const generos = await query('SELECT * FROM GENERO');
+      return res.render('admin/employees/add', {
+        error: 'Las contraseñas no coinciden.',
+        cargos,
+        generos,
+        nombre: req.session.nombre,
+        active: { empleados: true }
+      });
+    }
+
+    // Validar fecha de nacimiento
+    const fechaNacimiento = new Date(data.fecha_nacimiento);
     const hoy = new Date();
     if (fechaNacimiento > hoy) {
-      return res.status(400).send('La fecha de nacimiento no puede ser mayor a la fecha actual.');
+      const cargos = await query('SELECT * FROM CARGO');
+      const generos = await query('SELECT * FROM GENERO');
+      return res.render('admin/employees/add', {
+        error: 'La fecha de nacimiento no puede ser mayor a la fecha actual.',
+        cargos,
+        generos,
+        nombre: req.session.nombre,
+        active: { empleados: true }
+      });
     }
 
     // Validar si email ya existe en REGISTRO
     const existing = await query('SELECT * FROM REGISTRO WHERE email = ?', [data.email]);
     if (existing.length > 0) {
+      const cargos = await query('SELECT * FROM CARGO');
+      const generos = await query('SELECT * FROM GENERO');
       return res.render('admin/employees/add', {
         error: 'El correo ya está registrado',
+        cargos,
+        generos,
         nombre: req.session.nombre,
         active: { empleados: true }
       });
@@ -134,11 +178,23 @@ async function saveEmployee(req, res) {
     res.redirect('/admin/employees');
   } catch (err) {
     console.error('Error al guardar empleado:', err);
-    res.render('admin/employees/add', {
-      error: 'Error al guardar el empleado',
-      nombre: req.session.nombre,
-      active: { empleados: true }
-    });
+    // Volver a cargar cargos y generos para el formulario
+    try {
+      const getConnection = util.promisify(req.getConnection).bind(req);
+      const conn = await getConnection();
+      const query = util.promisify(conn.query).bind(conn);
+      const cargos = await query('SELECT * FROM CARGO');
+      const generos = await query('SELECT * FROM GENERO');
+      res.render('admin/employees/add', {
+        error: 'Error al guardar el empleado',
+        cargos,
+        generos,
+        nombre: req.session.nombre,
+        active: { empleados: true }
+      });
+    } catch (e) {
+      res.status(500).send('Error crítico al guardar empleado');
+    }
   }
 }
 
@@ -157,8 +213,13 @@ async function showEditForm(req, res) {
     }
     const empleado = result[0];
 
-    const generos = await query('SELECT * FROM GENERO');
+    // <-- AQUÍ conviertes la fecha antes de renderizar
+    if (empleado.fecha_nacimiento) {
+      const fecha = new Date(empleado.fecha_nacimiento);
+      empleado.fecha_nacimiento = fecha.toISOString().split('T')[0];
+    }
 
+    const generos = await query('SELECT * FROM GENERO');
     const cargos = await query('SELECT * FROM CARGO');
 
     res.render('admin/employees/edit', {
@@ -200,12 +261,6 @@ async function updateEmployee(req, res) {
     }
     const oldFoto = rows[0].foto;
 
-    // VALIDACIÓN Y LIMPIEZA DE genero_id
-    /*let generoId = data.genero_id;
-    if (!generoId || isNaN(Number(generoId))) {
-      return res.status(400).send('Debe seleccionar un género válido.');
-    }
-    generoId = Number(generoId);*/
 
     const empleado = {
       nombres: data.nombres,
@@ -218,7 +273,7 @@ async function updateEmployee(req, res) {
       email: data.email,
       cod_cargo: data.cod_cargo
     };
-
+    
     if (file) {
       empleado.foto = file.filename;
       // Eliminar foto antigua si existe

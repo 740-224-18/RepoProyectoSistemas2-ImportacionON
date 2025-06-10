@@ -2,84 +2,90 @@
 
 <div class="container mx-auto p-6">
   <div class="bg-[#F8F8F8] rounded-xl shadow-lg overflow-hidden p-6 max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold mb-6 text-[#333333] border-b pb-2 border-[#E8EBE8]">Editar Producto</h2>
+    <h2 class="text-2xl font-bold mb-6 text-[#0F172A] border-b pb-2 border-[#FFD700]">Editar Producto</h2>
 
     <form action="/admin/products/edit/{{producto.cod_producto}}" method="POST" enctype="multipart/form-data" class="space-y-6">
       <!-- Nombre del producto -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Nombre del Producto</label>
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Nombre del Producto</label>
         <input type="text" name="nombre" value="{{producto.nombre}}" required 
-               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+               class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">
       </div>
 
       <!-- Descripción -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Descripción</label>
-        <textarea name="descripcion" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent h-24 shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">{{producto.descripcion}}</textarea>
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Descripción</label>
+        <textarea name="descripcion" required 
+                  class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent h-24 shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">{{producto.descripcion}}</textarea>
       </div>
 
       <!-- Precio -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Precio</label>
-        <input type="number" name="precio" value="{{producto.precio}}" required step="0.01" 
-               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Precio</label>
+        <input type="number" name="precio" value="{{producto.precio}}" required step="0.01"
+               class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">
       </div>
 
       <!-- Precio de compra (opcional) -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Precio de Compra <span class="text-xs text-gray-400">(opcional)</span></label>
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Precio de Compra <span class="text-xs text-gray-400">(opcional)</span></label>
         <input type="number" name="precio_compra" value="{{producto.precio_compra}}" step="0.01"
-               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+               class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">
       </div>
 
       <!-- Stock -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Stock</label>
-        <input type="number" name="stock" value="{{producto.stock}}" required 
-               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Stock</label>
+        <input type="number" name="stock" value="{{producto.stock}}" required
+               class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">
       </div>
 
       <!-- Stock mínimo (opcional) -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Stock Mínimo <span class="text-xs text-gray-400">(opcional)</span></label>
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Stock Mínimo <span class="text-xs text-gray-400">(opcional)</span></label>
         <input type="number" name="stock_minimo" value="{{producto.stock_minimo}}" min="0"
-               class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333] placeholder-[#A0A0A0] focus:bg-[#F9F9F9]">
+               class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A] placeholder-[#A0A0A0]">
       </div>
 
       <!-- Categoría -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Categoría</label>
-        <select name="cod_cat" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Categoría</label>
+        <select name="cod_cat" class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A]">
           <option value="" disabled>Seleccione una Categoría</option>
           {{#each categorias}}
-            <option value="{{cod_cat}}" {{#if (eq cod_cat ../producto.cod_cat)}}selected{{/if}}>{{nombre}}</option>
+            <option value="{{cod_cat}}" {{#ifCond cod_cat '==' ../producto.cod_cat}}selected{{/ifCond}}>{{nombre}}</option>
           {{/each}}
         </select>
       </div>
 
       <!-- Proveedor (opcional) -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Proveedor <span class="text-xs text-gray-400">(opcional)</span></label>
-        <select name="proveedor_id" class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Proveedor <span class="text-xs text-gray-400">(opcional)</span></label>
+        <select name="proveedor_id" class="w-full p-3 border border-[#FFD700] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#0F172A]">
           <option value="" selected>Seleccione un Proveedor</option>
           {{#each proveedores}}
-            <option value="{{cod_proveedor}}" {{#if (eq cod_proveedor ../producto.proveedor_id)}}selected{{/if}}>{{nombre}}</option>
+            <option value="{{cod_proveedor}}" {{#ifCond cod_proveedor '==' ../producto.proveedor_id}}selected{{/ifCond}}>{{nombre}}</option>
           {{/each}}
         </select>
       </div>
 
       <!-- Foto -->
       <div>
-        <label class="block text-sm font-medium text-[#333333] mb-1">Foto</label>
+        <label class="block text-sm font-medium text-[#0F172A] mb-1">Foto</label>
+        {{#if producto.foto}}
+          <div class="mb-3">
+            <img src="/images/products/{{producto.foto}}" alt="Foto de {{producto.nombre}}" class="w-32 h-32 object-cover rounded-md border border-[#FFD700]">
+          </div>
+        {{/if}}
         <input type="file" name="foto" accept="image/*" 
-               class="w-full text-sm text-[#333333] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#E8EBE8] file:text-[#333333] hover:file:bg-[#D1D5D8]">
+               class="w-full text-sm text-[#0F172A] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FFD700] file:text-[#0F172A] hover:file:bg-[#FFAA00]">
       </div>
 
-      <div class="flex justify-end space-x-4 pt-4 border-t border-[#E8EBE8]">
+      <div class="flex justify-end space-x-4 pt-4 border-t border-[#FFD700]">
         <button type="submit" class="px-6 py-2 bg-[#B90504] text-white rounded-lg hover:bg-[#990100] transition-all duration-200 flex items-center">
-          <i class="fas fa-save mr-2"></i> Actualizar Producto
+          <i class="fas fa-save mr-2"></i> Guardar Cambios
         </button>
-        <a href="/admin/products" class="px-6 py-2 border border-[#E8EBE8] text-[#333333] rounded-lg hover:bg-[#E8EBE8] transition-all duration-200 flex items-center">
+        <a href="/admin/products" class="px-6 py-2 border border-[#FFD700] text-[#0F172A] rounded-lg hover:bg-[#FFD700] hover:text-[#0F172A] transition-all duration-200 flex items-center">
           <i class="fas fa-times mr-2"></i> Cancelar
         </a>
       </div>
