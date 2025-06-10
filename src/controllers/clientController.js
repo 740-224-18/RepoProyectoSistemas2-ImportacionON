@@ -1,146 +1,65 @@
 const util = require('util');
 
-// Ver perfil del cliente
-async function perfilCliente(req, res) {
-  if (!req.session.loggedin || !req.session.cliente_id) {
-    return res.redirect('/login');
-  }
-
-  try {
-    const getConnection = util.promisify(req.getConnection).bind(req);
-    const conn = await getConnection();
-    const query = util.promisify(conn.query).bind(conn);
-
-    const cliente = await query(`
-      SELECT C.*, G.nombre AS genero
-      FROM CLIENTE C
-      LEFT JOIN GENERO G ON C.genero_id = G.cod_genero
-      WHERE C.cod_cliente = ?
-    `, [req.session.cliente_id]);
-
-    res.render('cliente/perfil', {
-      cliente: cliente[0],
-      nombre: req.session.nombre,
-      rol: req.session.rolNombre,
-      active: { perfil: true }
-    });
-  } catch (err) {
-    console.error('Error al cargar perfil del cliente:', err);
-    res.status(500).render('error', { error: 'Error al cargar perfil del cliente' });
-  }
+async function showRegisterClient(req, res) {
+  if (!req.session.loggedin) return res.redirect('/login');
+  res.render('pages/registerClient', {
+    nombre: req.session.nombre,
+    email: req.session.email || '',
+    cod_registro: req.session.cod_registro
+  });
 }
 
-// Mostrar formulario para editar datos
-async function editarPerfil(req, res) {
-  if (!req.session.loggedin || !req.session.cliente_id) {
-    return res.redirect('/login');
-  }
+async function storeClient(req, res) {
+  if (!req.session.loggedin) return res.status(401).send('No autorizado');
+  const data = req.body;
 
   try {
     const getConnection = util.promisify(req.getConnection).bind(req);
     const conn = await getConnection();
     const query = util.promisify(conn.query).bind(conn);
 
-    const cliente = await query('SELECT * FROM CLIENTE WHERE cod_cliente = ?', [req.session.cliente_id]);
-    const generos = await query('SELECT * FROM GENERO');
+    // Verifica si ya existe cliente para este usuario
+    const existing = await query('SELECT * FROM CLIENTE WHERE usuario_id = ?', [req.session.cod_registro]);
+    if (existing.length > 0) {
+      return res.render('pages/registerClient', { error: 'Ya tienes un perfil de cliente registrado.' });
+    }
 
-    res.render('cliente/editar', {
-      cliente: cliente[0],
-      generos,
-      nombre: req.session.nombre,
-      rol: req.session.rolNombre,
-      active: { perfil: true }
-    });
+    // Insertar en CLIENTE
+    const cliente = {
+      usuario_id: req.session.cod_registro,
+      nombres: data.nombres,
+      apellidos: data.apellidos,
+      ci_o_nit: data.ci_o_nit,
+      celular: data.celular,
+      fecha_nacimiento: data.fecha_nacimiento,
+      genero_id: data.genero_id
+    };
+    const result = await query('INSERT INTO CLIENTE SET ?', cliente);
+    const cliente_id = result.insertId;
+
+    // Insertar dirección principal
+    const direccion = {
+      cliente_id,
+      direccion: data.direccion,
+      ciudad: data.ciudad,
+      departamento_id: data.departamento_id || null,
+      pais_id: data.pais_id || null,
+      codigo_postal: data.codigo_postal,
+      referencia: data.referencia
+    };
+    await query('INSERT INTO DIRECCION_CLIENTE SET ?', direccion);
+
+    // Actualiza la sesión para indicar que ya es cliente
+    req.session.cliente_id = cliente_id;
+
+    res.redirect('/productos');
   } catch (err) {
-    console.error('Error al cargar formulario de edición:', err);
-    res.status(500).render('error', { error: 'Error al cargar formulario de edición' });
-  }
-}
-
-// Procesar edición de perfil
-async function actualizarPerfil(req, res) {
-  if (!req.session.loggedin || !req.session.cliente_id) {
-    return res.redirect('/login');
-  }
-
-  const { nombres, apellidos, celular, ci_o_nit, fecha_nacimiento, genero_id } = req.body;
-
-  try {
-    const getConnection = util.promisify(req.getConnection).bind(req);
-    const conn = await getConnection();
-    const query = util.promisify(conn.query).bind(conn);
-
-    await query(`
-      UPDATE CLIENTE SET 
-        nombres = ?, apellidos = ?, celular = ?, ci_o_nit = ?, 
-        fecha_nacimiento = ?, genero_id = ?
-      WHERE cod_cliente = ?
-    `, [nombres, apellidos, celular, ci_o_nit, fecha_nacimiento, genero_id, req.session.cliente_id]);
-
-    res.redirect('/cliente/perfil');
-  } catch (err) {
-    console.error('Error al actualizar perfil:', err);
-    res.status(500).render('error', { error: 'Error al actualizar perfil' });
-  }
-}
-
-// Mostrar direcciones del cliente
-async function verDirecciones(req, res) {
-  if (!req.session.loggedin || !req.session.cliente_id) {
-    return res.redirect('/login');
-  }
-
-  try {
-    const getConnection = util.promisify(req.getConnection).bind(req);
-    const conn = await getConnection();
-    const query = util.promisify(conn.query).bind(conn);
-
-    const direcciones = await query(`
-      SELECT DC.*, D.nombre AS departamento, P.nombre AS pais
-      FROM DIRECCION_CLIENTE DC
-      LEFT JOIN DEPARTAMENTO D ON DC.departamento_id = D.cod_departamento
-      LEFT JOIN PAIS P ON DC.pais_id = P.cod_pais
-      WHERE cliente_id = ?
-    `, [req.session.cliente_id]);
-
-    res.render('cliente/direcciones', {
-      direcciones,
-      nombre: req.session.nombre,
-      rol: req.session.rolNombre,
-      active: { direcciones: true }
-    });
-  } catch (err) {
-    console.error('Error al obtener direcciones:', err);
-    res.status(500).render('error', { error: 'Error al cargar direcciones' });
-  }
-}
-
-// Agregar dirección
-async function agregarDireccion(req, res) {
-  const { direccion, ciudad, departamento_id, pais_id, codigo_postal, referencia } = req.body;
-
-  try {
-    const getConnection = util.promisify(req.getConnection).bind(req);
-    const conn = await getConnection();
-    const query = util.promisify(conn.query).bind(conn);
-
-    await query(`
-      INSERT INTO DIRECCION_CLIENTE 
-        (cliente_id, direccion, ciudad, departamento_id, pais_id, codigo_postal, referencia)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [req.session.cliente_id, direccion, ciudad, departamento_id, pais_id, codigo_postal, referencia]);
-
-    res.redirect('/cliente/direcciones');
-  } catch (err) {
-    console.error('Error al agregar dirección:', err);
-    res.status(500).render('error', { error: 'No se pudo guardar la dirección' });
+    console.error('Error al registrar cliente:', err);
+    res.render('pages/registerClient', { error: 'Error al registrar cliente.' });
   }
 }
 
 module.exports = {
-  perfilCliente,
-  editarPerfil,
-  actualizarPerfil,
-  verDirecciones,
-  agregarDireccion
+  showRegisterClient,
+  storeClient
 };

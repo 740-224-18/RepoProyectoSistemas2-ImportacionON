@@ -65,12 +65,8 @@
         <div>
           <label class="block text-sm font-medium text-[#333333] mb-1">Cargo</label>
           <select name="cod_cargo" required
-<<<<<<< HEAD
-                  class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-white text-[#333333]">
-=======
                   class="w-full p-3 border border-[#E8EBE8] rounded-lg focus:ring-2 focus:ring-[#B90504] focus:border-transparent shadow-sm bg-black text-[#333333]">
             {{!-- Mostrar opción actual seleccionada --}}
->>>>>>> b726bb1159547296bb27c01929780ed3811a8563
             <option value="{{empleado.cod_cargo}}" selected>{{empleado.cargo_nombre}}</option>
             {{#each cargos}}
               {{#unless (eq cod_cargo ../empleado.cod_cargo)}}

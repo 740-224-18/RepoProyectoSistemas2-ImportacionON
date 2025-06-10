@@ -31,7 +31,8 @@ function listClientProducts(req, res) {
         productos,
         searchQuery,
         active: { productos: true },
-        nombre: req.session.nombre || null
+        nombre: req.session.nombre || null,
+        esCliente: !!req.session.cliente_id
       });
     });
   });
