@@ -10,7 +10,9 @@ const path = require('path');
 const authRoutes = require('./routes/authRoutes'); 
 const employeeRoutes = require('./routes/employeeRoutes');
 const productRoutes = require('./routes/productRoutes');
-const clientProductRoutes = require('./routes/clientProductRoutes'); 
+const clientProductRoutes = require('./routes/clientProductRoutes');
+const carritoRoutes = require('./routes/carritoRoutes'); 
+const clientRoutes = require('./routes/clientRoutes');
 
 // Middlewares de autenticación
 const { isLoggedIn, isNotLoggedIn, isAdmin, isEmpleado } = require('./middlewares/authMiddleware');
@@ -34,6 +36,14 @@ app.use(session({
 app.use(flash());
 
 // Conexión a MySQL
+/*app.use(myconnection(mysql, {
+    host: 'sql10.freesqldatabase.com',
+    user: 'sql10783953',
+    password: '7G9s5gXqU1',
+    port: 3306,
+    database: 'sql10783953'
+}, 'single'));*/
+
 app.use(myconnection(mysql, {
     host: '127.0.0.1',
     user: 'root',
@@ -41,6 +51,7 @@ app.use(myconnection(mysql, {
     port: 3306,
     database: 'importadoraon'
 }, 'single'));
+
 
 // Middleware para pasar mensajes flash a las vistas
 app.use((req, res, next) => {
@@ -84,6 +95,9 @@ app.use('/', authRoutes);
 app.use('/admin/employees', isLoggedIn, isAdmin, employeeRoutes);
 app.use('/admin/products', isLoggedIn, isAdmin, productRoutes);
 app.use('/productos', clientProductRoutes);
+app.use('/carrito', carritoRoutes);
+app.use('/', clientRoutes);
+
 
 // Ruta raíz con redirección según rol
 app.get('/', (req, res) => {

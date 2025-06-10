@@ -45,8 +45,8 @@ async function auth(req, res) {
     const clienteResult = await query('SELECT cod_cliente FROM CLIENTE WHERE usuario_id = ?', [usuario.cod_registro]);
     const cliente_id = clienteResult.length > 0 ? clienteResult[0].cod_cliente : null;
 
-    //const empleado = await query('SELECT cod_empleado FROM EMPLEADO WHERE usuario_id = ?', [usuario.cod_registro]);
-    //const empleado_id = empleado.length > 0 ? empleado[0].cod_empleado : null;
+    const empleadoResult = await query('SELECT cod_empleado FROM EMPLEADO WHERE usuario_id = ?', [usuario.cod_registro]);
+    const empleado_id = empleadoResult.length > 0 ? empleadoResult[0].cod_empleado : null;
 
     req.session.loggedin = true;
     req.session.nombre = usuario.usuario;
@@ -54,8 +54,7 @@ async function auth(req, res) {
     req.session.rolNombre = usuario.nombre_rol;
     req.session.cod_registro = usuario.cod_registro;
     req.session.cliente_id = cliente_id;
-    //req.session.empleado_id = empleado_id;
-
+    req.session.empleado_id = empleado_id;
 
     // Redireccionar según rol
     if (usuario.rol_id == 3) {
@@ -123,7 +122,6 @@ async function storeUser(req, res) {
   }
 }
 
-// Cerrar sesión
 function logout(req, res) {
   req.session.destroy();
   res.redirect('/login');
