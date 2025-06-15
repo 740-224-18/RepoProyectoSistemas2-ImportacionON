@@ -49,12 +49,34 @@ async function mostrarCarrito(req, res) {
       return { ...p, cantidad, subtotal };
     });
 
+    // Obtener datos del cliente para el recibo (nombre completo, celular y dirección)
+    let cliente = {};
+    if (req.session.cliente_id) {
+      const clientes = await query(
+        `SELECT c.nombres, c.apellidos, c.celular, dc.direccion
+         FROM CLIENTE c
+         LEFT JOIN DIRECCION_CLIENTE dc ON c.cod_cliente = dc.cliente_id
+         WHERE c.cod_cliente = ?
+         LIMIT 1`,
+        [req.session.cliente_id]
+      );
+      if (clientes.length > 0) {
+        const c = clientes[0];
+        cliente = {
+          nombre: `${c.nombres} ${c.apellidos}`,
+          telefono: c.celular,
+          direccion: c.direccion || ''
+        };
+      }
+    }
+
     res.render('pages/carrito', {
       productos: productosConCantidad,
       total,
       nombre: req.session.nombre,
       rol: req.session.rolNombre,
-      loggedin: req.session.loggedin
+      loggedin: req.session.loggedin,
+      cliente // <-- pasa los datos del cliente
     });
   } catch (error) {
     console.error('Error en mostrarCarrito:', error);
@@ -71,6 +93,12 @@ async function confirmarCompra(req, res) {
       return res.redirect('/carrito');
     }
 
+    const { metodo_pago } = req.body;
+    if (!metodo_pago) {
+      req.flash('error_msg', 'Debe seleccionar un método de pago');
+      return res.redirect('/carrito');
+    }
+
     const getConnection = util.promisify(req.getConnection).bind(req);
     conn = await getConnection();
     const query = util.promisify(conn.query).bind(conn);
@@ -81,10 +109,37 @@ async function confirmarCompra(req, res) {
     await beginTransaction();
 
     const cliente_id = req.session.cliente_id || null;
+
+    // Obtener el id del método de pago
+    const metodoPagoRow = await query('SELECT cod_metodo FROM METODO_PAGO WHERE nombre = ?', [metodo_pago]);
+    const metodo_pago_id = metodoPagoRow.length > 0 ? metodoPagoRow[0].cod_metodo : null;
+
+    // Obtener la dirección principal del cliente
+    let direccion_entrega_id = null;
+    const direccionRow = await query(
+      'SELECT cod_direccion FROM DIRECCION_CLIENTE WHERE cliente_id = ? LIMIT 1',
+      [cliente_id]
+    );
+    if (direccionRow.length > 0) {
+      direccion_entrega_id = direccionRow[0].cod_direccion;
+    }
+
+    // Calcula el total del pedido
+    let total = 0;
+    for (const productoId of Object.keys(cart)) {
+      const productos = await query('SELECT precio FROM PRODUCTO WHERE cod_producto = ?', [productoId]);
+      if (productos.length > 0) {
+        total += productos[0].precio * cart[productoId];
+      }
+    }
+
     const pedido = {
       cliente_id,
       estado_id: 1, // Pendiente
-      fecha_pedido: new Date()
+      fecha_pedido: new Date(),
+      metodo_pago_id,
+      direccion_entrega_id,
+      total
     };
 
     const resultPedido = await query('INSERT INTO PEDIDO SET ?', pedido);
@@ -104,7 +159,8 @@ async function confirmarCompra(req, res) {
         pedido_id: pedidoId,
         producto_id: productoId,
         cantidad,
-        precio_unitario: producto.precio
+        precio_unitario: producto.precio,
+        subtotal: producto.precio * cantidad
       });
 
       await query('UPDATE PRODUCTO SET stock = stock - ? WHERE cod_producto = ?', [cantidad, productoId]);
@@ -113,7 +169,7 @@ async function confirmarCompra(req, res) {
     await commit();
 
     req.session.cart = {};
-    req.flash('success_msg', 'Compra confirmada con éxito');
+    req.flash('success_msg', `Compra confirmada con éxito. Método de pago: ${metodo_pago}`);
     res.redirect('/carrito/confirmado');
   } catch (error) {
     try {

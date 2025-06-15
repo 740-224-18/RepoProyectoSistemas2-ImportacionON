@@ -13,6 +13,7 @@ const productRoutes = require('./routes/productRoutes');
 const clientProductRoutes = require('./routes/clientProductRoutes');
 const carritoRoutes = require('./routes/carritoRoutes'); 
 const clientRoutes = require('./routes/clientRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Middlewares de autenticación
 const { isLoggedIn, isNotLoggedIn, isAdmin, isEmpleado } = require('./middlewares/authMiddleware');
@@ -114,6 +115,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', authRoutes);
 app.use('/admin/employees', isLoggedIn, isAdmin, employeeRoutes);
 app.use('/admin/products', isLoggedIn, isAdmin, productRoutes);
+app.use('/admin', adminRoutes);
 app.use('/productos', clientProductRoutes);
 app.use('/carrito', carritoRoutes);
 app.use('/', clientRoutes);

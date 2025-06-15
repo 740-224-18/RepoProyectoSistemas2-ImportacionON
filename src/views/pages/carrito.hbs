@@ -27,9 +27,55 @@
 
     <p class="text-xl font-semibold text-right mb-6">Total: Bs. {{total}}</p>
 
-    <form action="/carrito/confirmar" method="POST" class="text-right">
-      <button type="submit" class="btn-gold py-2 px-6 rounded-full">Confirmar Compra</button>
+    <form id="confirmar-compra-form" class="text-right">
+      <button type="button" id="btn-confirmar" class="btn-gold py-2 px-6 rounded-full">Confirmar Compra</button>
     </form>
+
+    <!-- Modal de método de pago -->
+    <div id="modal-metodo-pago" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg p-8 w-full max-w-md text-center">
+        <h3 class="text-xl font-bold mb-4">Selecciona el método de pago</h3>
+        <form id="form-metodo-pago" action="/carrito/confirmar" method="POST">
+          <input type="hidden" name="total" value="{{total}}">
+          <div class="mb-6">
+            <label class="block mb-2">
+              <input type="radio" name="metodo_pago" value="Efectivo" required>
+              Efectivo
+            </label>
+            <label class="block">
+              <input type="radio" name="metodo_pago" value="PayPal" required>
+              PayPal
+            </label>
+          </div>
+          <div id="datos-recibo" class="mb-4 hidden">
+            <p class="font-semibold mb-2">Datos para el recibo:</p>
+            <p>Nombre: {{cliente.nombre}}</p>
+            <p>Dirección: {{cliente.direccion}}</p>
+            <p>Teléfono: {{cliente.telefono}}</p>
+          </div>
+          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold">Finalizar Pedido</button>
+          <button type="button" id="cerrar-modal" class="ml-4 text-gray-500 hover:underline">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('btn-confirmar').onclick = function() {
+        document.getElementById('modal-metodo-pago').classList.remove('hidden');
+      };
+      document.getElementById('cerrar-modal').onclick = function() {
+        document.getElementById('modal-metodo-pago').classList.add('hidden');
+      };
+      document.querySelectorAll('input[name="metodo_pago"]').forEach(function(radio) {
+        radio.onchange = function() {
+          if (this.value === 'Efectivo') {
+            document.getElementById('datos-recibo').classList.remove('hidden');
+          } else {
+            document.getElementById('datos-recibo').classList.add('hidden');
+          }
+        };
+      });
+    </script>
 
   {{else}}
     <p class="text-center text-blue-600 text-lg">No hay productos en el carrito.</p>
