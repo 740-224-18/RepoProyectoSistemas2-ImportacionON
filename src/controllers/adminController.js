@@ -21,7 +21,6 @@ async function mostrarPedidos(req, res) {
       ORDER BY p.fecha_pedido DESC
     `);
 
-    // Si tu plantilla espera cliente como objeto:
     const pedidosConCliente = pedidos.map(p => ({
       ...p,
       cliente: { nombre: p.nombre, direccion: p.direccion },

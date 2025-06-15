@@ -41,3 +41,8 @@ INSERT INTO GENERO (nombre)VALUES
 INSERT INTO EMPRESA (nombre, nit, telefono, direccion, email, pais_id) VALUES
 ('EL CEIBO', '123456789', '22841078', 'Av. Juan Pablo II #2560 (Final Autopista) El Alto, La Paz','agencia.elalto@elceibo.com', 1);
 
+INSERT INTO PROVEEDOR (nombre, email, telefono, direccion, empresa_id, representante) VALUES
+('Juan Perez', 'juanperez@gmail.com','78965412','Av. 6 de agosto #123', 1, 'Maria Lopez');
+
+
+
