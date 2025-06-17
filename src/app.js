@@ -67,7 +67,16 @@ app.use('/images/products', express.static(path.join(__dirname, 'public/image/pr
 
 // Archivos estáticos generales (CSS, JS, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
+// ...existing code...
 
+app.use((req, res, next) => {
+  res.locals.nombre = req.session.nombre || null;
+  res.locals.user = req.session.user || null;
+  res.locals.isAdmin = req.session.isAdmin || false;
+  next();
+});
+
+// ...rutas...
 
 
 // Motor de vistas con Handlebars y helpers
@@ -105,7 +114,29 @@ app.engine('.hbs', engine({
             case '||': return (v1 || v2) ? options.fn(this) : options.inverse(this);
             default: return options.inverse(this);
           }
-        }
+        },
+        formatDate: function(date) {
+          if (!date) return '';
+          const d = new Date(date);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          const hours = String(d.getHours()).padStart(2, '0');
+          const minutes = String(d.getMinutes()).padStart(2, '0');
+          return `${day}/${month}/${year} ${hours}:${minutes}`;
+        },
+        // ...existing helpers...
+        formatDateTime: function(date) {
+          if (!date) return '';
+          const d = new Date(date);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          const hours = String(d.getHours()).padStart(2, '0');
+          const minutes = String(d.getMinutes()).padStart(2, '0');
+          return `${day}/${month}/${year} ${hours}:${minutes}`;
+        },
+// ...existing helpers...
     }
 }));
 app.set('view engine', 'hbs');
