@@ -12,5 +12,4 @@ router.get('/dashboard', isLoggedIn, isAdmin, adminController.dashboard);
 router.get('/historial_inventario', isLoggedIn, isAdmin, adminController.historialInventario);
 router.get('/reporte_semanal', isLoggedIn, isAdmin, adminController.reporteSemanal);
 
-
 module.exports = router;

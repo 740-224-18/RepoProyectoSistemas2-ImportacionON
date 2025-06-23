@@ -1,47 +1,69 @@
-<footer class="footer-gradient text-white py-8">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-yellow-200">ImportadoraON</h3>
-                    <p class="text-gray-300">Líderes en importación y distribución de productos de alta calidad para el mercado local.</p>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-white">Contacto</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li class="flex items-start">
-                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-yellow-200"></i>
-                            <span>Av. Cooperativa 123, Santa Cruz</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-phone-alt mt-1 mr-2 text-yellow-200"></i>
-                            <span>+591 76262487</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-envelope mt-1 mr-2 text-yellow-200"></i>
-                            <span>contacto@importadoraon.com</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-white">Síguenos</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-red-600 flex items-center justify-center text-white transition-colors">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-red-600 flex items-center justify-center text-white transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-red-600 flex items-center justify-center text-white transition-colors">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
-                <p>© <span id="currentYear"></span> ImportadoraON. Todos los derechos reservados.</p>
-            </div>
+<footer class="footer-gradient text-white py-12 mt-16 shadow-inner">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+      <!-- Logo y descripción -->
+      <div class="flex flex-col items-start">
+        <div class="flex items-center mb-4">
+          <img src="/images/logo-on.png" alt="ImportadoraON" class="w-12 h-12 rounded-full shadow-lg mr-3 border-2 border-yellow-300 bg-white object-contain">
+          <span class="text-2xl font-extrabold text-yellow-200 tracking-wide">Importadora <span class="text-yellow-400">O-N</span></span>
         </div>
-    </footer>
+        <p class="text-gray-200 text-sm leading-relaxed">
+          Líderes en importación y distribución de productos de alta calidad para el mercado boliviano.<br>
+          Comprometidos con la excelencia y el servicio.
+        </p>
+      </div>
+      
+      <!-- Enlaces rápidos -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-yellow-200 uppercase tracking-wider">Enlaces</h4>
+        <ul class="space-y-2 text-gray-300 text-sm">
+          <li><a href="/" class="hover:text-yellow-400 transition">Inicio</a></li>
+          <li><a href="/productos" class="hover:text-yellow-400 transition">Productos</a></li>
+          <li><a href="/nosotros" class="hover:text-yellow-400 transition">Nosotros</a></li>
+          <li><a href="/contacto" class="hover:text-yellow-400 transition">Contacto</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contacto -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-yellow-200 uppercase tracking-wider">Contacto</h4>
+        <ul class="space-y-2 text-gray-300 text-sm">
+          <li class="flex items-center">
+            <i class="fas fa-map-marker-alt mr-2 text-yellow-400"></i>
+            Av. Cooperativa 123, Santa Cruz
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-phone-alt mr-2 text-yellow-400"></i>
+            +591 76262487
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-envelope mr-2 text-yellow-400"></i>
+            contacto@importadoraon.com
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Redes sociales -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-yellow-200 uppercase tracking-wider">Síguenos</h4>
+        <div class="flex space-x-4 items-center">
+          <a href="#" class="w-10 h-10 rounded-full bg-yellow-200 hover:bg-yellow-400 flex items-center justify-center text-[#a00000] shadow-lg transition-colors text-xl">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-yellow-200 hover:bg-yellow-400 flex items-center justify-center text-[#a00000] shadow-lg transition-colors text-xl">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-yellow-200 hover:bg-yellow-400 flex items-center justify-center text-[#a00000] shadow-lg transition-colors text-xl">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-yellow-300/30 mt-10 pt-6 text-center text-gray-300 text-sm tracking-wide">
+      <p>© <span id="currentYear"></span> ImportadoraON. Todos los derechos reservados.</p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</footer>

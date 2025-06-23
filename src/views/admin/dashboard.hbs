@@ -65,7 +65,7 @@
         </li>
         <li>
           <a href="/admin/orders_completed" class="flex items-center p-3 rounded-lg hover:bg-green-900/80 transition duration-200 {{#if active.pedidosCompletados}}bg-green-900/80 border-l-4 border-green-400{{/if}}">
-            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+            <i class="fas fa-check-circle text-yellow-400 mr-3"></i>
             <span>Pedidos Completados</span>
           </a>
         </li>
@@ -91,6 +91,12 @@
           <a href="/admin/employees" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.empleados}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
             <i class="fas fa-users text-[var(--accent)] mr-3"></i>
             <span>Empleados</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/proveedores" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.proveedores}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
+            <i class="fas fa-truck text-[var(--accent)] mr-3"></i>
+            <span>Proveedores</span>
           </a>
         </li>
       </ul>

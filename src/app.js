@@ -14,6 +14,8 @@ const clientProductRoutes = require('./routes/clientProductRoutes');
 const carritoRoutes = require('./routes/carritoRoutes'); 
 const clientRoutes = require('./routes/clientRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const contactosRoutes = require('./routes/contactosRoutes');
+const proveedorRoutes = require('./routes/proveedorRoutes');
 
 // Middlewares de autenticación
 const { isLoggedIn, isNotLoggedIn, isAdmin, isEmpleado } = require('./middlewares/authMiddleware');
@@ -145,6 +147,8 @@ app.use('/admin', adminRoutes);
 app.use('/productos', clientProductRoutes);
 app.use('/carrito', carritoRoutes);
 app.use('/', clientRoutes);
+app.use('/', contactosRoutes);
+app.use('/admin', proveedorRoutes);
 
 
 // Ruta raíz con redirección según rol
@@ -162,9 +166,18 @@ app.get('/', (req, res) => {
   }
 });
 
-// Ruta ejemplo para lista productos (cliente)
+// Rutas para paginas
+app.get('/nosotros', (req, res) => {
+  res.render('pages/nosotros');
+});
 app.get('/productos', (req, res) => {
   res.render('pages/productos');
+});
+app.get('/marcas', (req, res) => {
+  res.render('pages/marcas');
+});
+app.get('/contactos', (req, res) => {
+  res.render('pages/contactos');
 });
 
 // Manejo de errores 404

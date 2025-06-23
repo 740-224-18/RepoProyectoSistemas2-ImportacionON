@@ -1,6 +1,8 @@
 {{!< ../layouts/main}}
+
 <div class="max-w-6xl mx-auto p-8">
   <h2 class="text-2xl font-bold mb-6 text-gray-800">Historial de Inventario</h2>
+  <pre>{{{json historial}}}</pre> <!-- Agrega esto para ver los datos -->
   <table class="min-w-full bg-white border border-gray-200">
     <thead>
       <tr>
@@ -23,10 +25,15 @@
         <td>{{cantidad}}</td>
         <td>{{stock_anterior}}</td>
         <td>{{stock_nuevo}}</td>
-        <td>{{empleado}}</td>
+        <td>{{#if empleado}}{{empleado}}{{else}}-{{/if}}</td>
         <td>{{referencia_tipo}} #{{referencia_id}}</td>
       </tr>
       {{/each}}
     </tbody>
   </table>
+  {{#unless historial.length}}
+    <div class="text-center text-gray-600 mt-8 text-lg font-semibold">
+        No hay movimientos de inventario registrados.
+    </div>
+    {{/unless}}
 </div>

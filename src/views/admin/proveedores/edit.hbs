@@ -1,0 +1,38 @@
+{{!< ../layouts/main}}
+
+<div class="max-w-xl mx-auto p-8 bg-white rounded-xl shadow-lg">
+  <h2 class="text-2xl font-bold mb-6 text-[#0F172A]">Editar Proveedor</h2>
+  <form action="/admin/proveedores/edit/{{proveedor.cod_proveedor}}" method="POST">
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Nombre</label>
+      <input type="text" name="nombre" value="{{proveedor.nombre}}" required class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Email</label>
+      <input type="email" name="email" value="{{proveedor.email}}" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Teléfono</label>
+      <input type="text" name="telefono" value="{{proveedor.telefono}}" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Dirección</label>
+      <input type="text" name="direccion" value="{{proveedor.direccion}}" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Empresa</label>
+      <select name="empresa_id" class="border rounded w-full px-3 py-2">
+        <option value="">-- Seleccione --</option>
+        {{#each empresas}}
+          <option value="{{cod_empresa}}" {{#if (eq cod_empresa ../proveedor.empresa_id)}}selected{{/if}}>{{nombre}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Representante</label>
+      <input type="text" name="representante" value="{{proveedor.representante}}" class="border rounded w-full px-3 py-2">
+    </div>
+    <button type="submit" class="bg-[#0F172A] text-[#FFD700] px-4 py-2 rounded font-semibold hover:bg-[#FFD700] hover:text-[#0F172A] transition">Actualizar</button>
+    <a href="/admin/proveedores" class="ml-4 text-[#0F172A] hover:underline">Cancelar</a>
+  </form>
+</div>

@@ -1,0 +1,118 @@
+{{!< ../layouts/main}}
+
+<div class="max-w-xl mx-auto p-8 bg-white rounded-xl shadow-lg">
+  <h2 class="text-2xl font-bold mb-6 text-[#0F172A]">Agregar Proveedor</h2>
+  <form action="/admin/proveedores/add" method="POST">
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Nombre</label>
+      <input type="text" name="nombre" required class="border rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Email</label>
+      <input type="email" name="email" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Teléfono</label>
+      <input type="text" name="telefono" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Dirección</label>
+      <input type="text" name="direccion" class="border rounded w-full px-3 py-2">
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Empresa</label>
+      <div class="flex gap-2">
+        <select name="empresa_id" id="empresa_id" class="border rounded w-full px-3 py-2">
+          <option value="">-- Seleccione --</option>
+          {{#each empresas}}
+            <option value="{{cod_empresa}}">{{nombre}}</option>
+          {{/each}}
+        </select>
+        <button type="button" id="btnNuevaEmpresa" class="bg-blue-600 text-white px-3 py-2 rounded">Nueva Empresa</button>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold text-[#0F172A]">Representante</label>
+      <input type="text" name="representante" class="border rounded w-full px-3 py-2">
+    </div>
+    <button type="submit" class="bg-[#0F172A] text-[#FFD700] px-4 py-2 rounded font-semibold hover:bg-[#FFD700] hover:text-[#0F172A] transition">Guardar Proveedor</button>
+    <a href="/admin/proveedores" class="ml-4 text-[#0F172A] hover:underline">Cancelar</a>
+  </form>
+</div>
+
+<!-- Modal Empresa -->
+<div id="modalEmpresa" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+    <h3 class="text-xl font-bold mb-4 text-[#0F172A]">Agregar Empresa</h3>
+    <form id="formEmpresa">
+      <div class="mb-2">
+        <label class="block font-semibold">Nombre</label>
+        <input type="text" name="nombre" required class="border rounded w-full px-3 py-2">
+      </div>
+      <div class="mb-2">
+        <label class="block font-semibold">NIT</label>
+        <input type="text" name="nit" class="border rounded w-full px-3 py-2">
+      </div>
+      <div class="mb-2">
+        <label class="block font-semibold">Teléfono</label>
+        <input type="text" name="telefono" class="border rounded w-full px-3 py-2">
+      </div>
+      <div class="mb-2">
+        <label class="block font-semibold">Dirección</label>
+        <input type="text" name="direccion" class="border rounded w-full px-3 py-2">
+      </div>
+      <div class="mb-2">
+        <label class="block font-semibold">Email</label>
+        <input type="email" name="email" class="border rounded w-full px-3 py-2">
+      </div>
+      <div class="mb-2">
+        <label class="block font-semibold">País</label>
+        <select name="pais_id" class="border rounded w-full px-3 py-2">
+          {{#each paises}}
+            <option value="{{cod_pais}}">{{nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" id="cerrarModalEmpresa" class="px-4 py-2 rounded bg-gray-300">Cancelar</button>
+        <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Mostrar modal
+  document.getElementById('btnNuevaEmpresa').onclick = function() {
+    document.getElementById('modalEmpresa').classList.remove('hidden');
+  };
+  // Cerrar modal
+  document.getElementById('cerrarModalEmpresa').onclick = function() {
+    document.getElementById('modalEmpresa').classList.add('hidden');
+  };
+  // Guardar empresa vía AJAX
+  document.getElementById('formEmpresa').onsubmit = async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+    const res = await fetch('/admin/empresas/add', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      const empresa = await res.json();
+      // Agrega la nueva empresa al select
+      const select = document.getElementById('empresa_id');
+      const option = document.createElement('option');
+      option.value = empresa.id;
+      option.textContent = empresa.nombre;
+      select.appendChild(option);
+      select.value = empresa.id;
+      document.getElementById('modalEmpresa').classList.add('hidden');
+      form.reset();
+    } else {
+      alert('Error al guardar empresa');
+    }
+  };
+</script>

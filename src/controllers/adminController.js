@@ -14,6 +14,7 @@ async function descargarPedidoPDF(req, res) {
       SELECT 
         p.cod_pedido AS id,
         mp.nombre AS metodo_pago,
+        p.metodo_pago_id,
         p.estado_id,
         p.fecha_pedido AS fecha,
         c.nombres AS cliente_nombre,
@@ -42,6 +43,24 @@ async function descargarPedidoPDF(req, res) {
       JOIN PRODUCTO pr ON dp.producto_id = pr.cod_producto
       WHERE dp.pedido_id = ?
     `, [pedidoId]);
+
+    const reciboExistente = await query(
+      'SELECT * FROM RECIBO WHERE pedido_id = ?', [pedidoId]
+    );
+
+    if (!reciboExistente.length) {
+      // 2. Si no existe, crea el recibo
+      await query(
+        `INSERT INTO RECIBO (pedido_id, monto_total, metodo_pago_id, detalle_extra)
+         VALUES (?, ?, ?, ?)`,
+        [
+          pedidoId,
+          pedido.total,
+          pedido.metodo_pago_id, // Asegúrate de tener este dato en tu consulta
+          'Recibo generado automáticamente al descargar el PDF'
+        ]
+      );
+    }
 
     // Parámetros de ejemplo (ajusta según tu modelo)
     const fecha = new Date(pedido.fecha);
@@ -220,7 +239,7 @@ async function completarPedido(req, res) {
     }
 
     // Cambiar estado a completado (2)
-    await query('UPDATE PEDIDO SET estado_id = 2 WHERE cod_pedido = ?', [pedidoId]);
+    await query('UPDATE PEDIDO SET estado_id = 2, fecha_entrega = NOW() WHERE cod_pedido = ?', [pedidoId]);
     res.json({ success: true });
   } catch (err) {
     console.error('Error al completar pedido:', err);
@@ -338,8 +357,8 @@ async function historialInventario(req, res) {
     const historial = await query(`
       SELECT hi.*, pr.nombre AS producto, im.nombre AS movimiento, e.nombres AS empleado
       FROM HISTORIAL_INVENTARIO hi
-      JOIN PRODUCTO pr ON hi.producto_id = pr.cod_producto
-      JOIN INVENTARIO_MOVIMIENTO im ON hi.movimiento_id = im.cod_movimiento
+      LEFT JOIN PRODUCTO pr ON hi.producto_id = pr.cod_producto
+      LEFT JOIN INVENTARIO_MOVIMIENTO im ON hi.movimiento_id = im.cod_movimiento
       LEFT JOIN EMPLEADO e ON hi.empleado_id = e.cod_empleado
       ORDER BY hi.fecha_movimiento DESC
       LIMIT 100
