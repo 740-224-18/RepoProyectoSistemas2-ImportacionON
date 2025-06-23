@@ -1,0 +1,17 @@
+{{!< ../layouts/main}}
+<div class="max-w-2xl mx-auto p-8">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Reporte Semanal</h2>
+  {{#if reporte}}
+    <ul class="mb-4">
+      <li><b>Fecha:</b> {{reporte.fecha_inicio}} a {{reporte.fecha_fin}}</li>
+      <li><b>Total pedidos:</b> {{reporte.total_pedidos}}</li>
+      <li><b>Completados:</b> {{reporte.pedidos_completados}}</li>
+      <li><b>Cancelados:</b> {{reporte.pedidos_cancelados}}</li>
+      <li><b>Monto total:</b> Bs {{reporte.monto_total}}</li>
+      <li><b>Productos vendidos:</b> {{reporte.productos_vendidos}}</li>
+    </ul>
+    <p><b>Observaciones:</b> {{reporte.observaciones}}</p>
+  {{else}}
+    <p>No hay reporte semanal generado.</p>
+  {{/if}}
+</div>

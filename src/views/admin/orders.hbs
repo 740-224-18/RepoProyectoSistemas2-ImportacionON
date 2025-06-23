@@ -81,16 +81,19 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.completar-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', async function() {
         const pedidoId = this.getAttribute('data-id');
         const nombre = this.getAttribute('data-nombre');
         if (confirm(`¿Estás seguro de marcar el pedido #${pedidoId} de ${nombre} como COMPLETADO?`)) {
-          // Aquí deberías hacer una petición AJAX para actualizar el estado en el backend
-          // Por ahora, solo mostramos el mensaje
-          const alertDiv = document.getElementById('alert-completado');
-          alertDiv.textContent = `¡El pedido #${pedidoId} ha sido marcado como COMPLETADO!`;
-          alertDiv.classList.remove('hidden');
-          setTimeout(() => alertDiv.classList.add('hidden'), 3500);
+          // Petición AJAX
+          const res = await fetch(`/admin/orders/${pedidoId}/completar`, { method: 'POST' });
+          if (res.ok) {
+            this.closest('tr').remove();
+            const alertDiv = document.getElementById('alert-completado');
+            alertDiv.textContent = `¡El pedido #${pedidoId} ha sido marcado como COMPLETADO!`;
+            alertDiv.classList.remove('hidden');
+            setTimeout(() => alertDiv.classList.add('hidden'), 3500);
+          }
         }
       });
     });

@@ -1,56 +1,45 @@
 {{!< layouts/main}}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
     :root {
-        --primary: #d10000; /* Rojo */
-        --primary-dark: #a00000; /* Rojo oscuro */
-        --primary-light: #ff4d4d; /* Rojo claro */
-        --secondary: #333333; /* Gris oscuro */
-        --accent: #ffd700; /* Amarillo */
-        --light: #f8f8f8; /* Gris muy claro */
+        --primary: #d10000;
+        --primary-dark: #a00000;
+        --primary-light: #ff4d4d;
+        --secondary: #333333;
+        --accent: #ffd700;
+        --light: #f8f8f8;
     }
-
     body {
         background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
         min-height: 100vh;
     }
-
-    /* Encabezado */
     .header-gradient {
         background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
     }
-
-    /* Sidebar */
     .sidebar {
         background: var(--secondary);
         color: white;
     }
-
     .sidebar a {
         color: white;
     }
-
     .sidebar a:hover {
         background-color: var(--primary-dark);
     }
-
     .btn-primary {
         background: var(--primary);
         color: white;
         transition: all 0.3s ease;
     }
-
     .btn-primary:hover {
         background: var(--primary-light);
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(209, 0, 0, 0.3);
     }
-
     .footer-gradient {
         background: linear-gradient(90deg, var(--secondary) 0%, #222 100%);
     }
-
     .input-focus:focus {
         border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.1);
@@ -66,7 +55,6 @@
       </h1>
       <p class="text-sm text-gray-300">Bienvenido, {{nombre}}</p>
     </div>
-    
     <nav class="p-4">
       <ul class="space-y-2">
         <li>
@@ -76,15 +64,27 @@
           </a>
         </li>
         <li>
+          <a href="/admin/orders_completed" class="flex items-center p-3 rounded-lg hover:bg-green-900/80 transition duration-200 {{#if active.pedidosCompletados}}bg-green-900/80 border-l-4 border-green-400{{/if}}">
+            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+            <span>Pedidos Completados</span>
+          </a>
+        </li>
+        <li>
           <a href="/admin/products" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.productos}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
             <i class="fas fa-boxes text-[var(--accent)] mr-3"></i>
             <span>Productos</span>
           </a>
         </li>
         <li>
-          <a href="/admin/reports" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.reportes}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
+          <a href="/admin/historial_inventario" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.historial}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
+            <i class="fas fa-history text-[var(--accent)] mr-3"></i>
+            <span>Historial Inventario</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/reporte_semanal" class="flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)] transition duration-200 {{#if active.reporteSemanal}}bg-[var(--primary-dark)] border-l-4 border-[var(--accent)]{{/if}}">
             <i class="fas fa-chart-bar text-[var(--accent)] mr-3"></i>
-            <span>Reportes</span>
+            <span>Reporte Semanal</span>
           </a>
         </li>
         <li>
@@ -92,10 +92,8 @@
             <i class="fas fa-users text-[var(--accent)] mr-3"></i>
             <span>Empleados</span>
           </a>
-          </a>
         </li>
       </ul>
-      
       <div class="mt-8 pt-4 border-t border-[var(--accent)]/20">
         <a href="/logout" class="flex items-center p-3 text-red-400 hover:bg-red-900/20 rounded-lg transition duration-200">
           <i class="fas fa-sign-out-alt mr-3"></i>
@@ -116,7 +114,6 @@
             <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
           </div>
           <div class="flex items-center">
-          
             <span class="text-sm font-medium">{{user.nombre}}</span>
           </div>
         </div>
@@ -130,96 +127,122 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-500">Pedidos Hoy</p>
-              <h3 class="text-2xl font-bold">24</h3>
+              <h3 class="text-2xl font-bold">{{pedidosHoy}}</h3>
             </div>
             <div class="bg-[var(--accent)]/10 p-3 rounded-full">
               <i class="fas fa-shopping-cart text-[var(--accent)]"></i>
             </div>
           </div>
-          <p class="text-green-500 text-sm mt-2"><i class="fas fa-arrow-up mr-1"></i> 12% desde ayer</p>
         </div>
-        
         <div class="bg-white rounded-lg shadow p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-gray-500">Ingresos</p>
-              <h3 class="text-2xl font-bold">$5,430</h3>
+              <p class="text-gray-500">Ingresos Hoy</p>
+              <h3 class="text-2xl font-bold">Bs {{ingresosHoy}}</h3>
             </div>
             <div class="bg-blue-100 p-3 rounded-full">
               <i class="fas fa-dollar-sign text-blue-500"></i>
             </div>
           </div>
-          <p class="text-green-500 text-sm mt-2"><i class="fas fa-arrow-up mr-1"></i> 8% desde ayer</p>
         </div>
-        
         <div class="bg-white rounded-lg shadow p-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-500">Productos</p>
-              <h3 class="text-2xl font-bold">156</h3>
+              <h3 class="text-2xl font-bold">{{totalProductos}}</h3>
             </div>
             <div class="bg-green-100 p-3 rounded-full">
               <i class="fas fa-boxes text-green-500"></i>
             </div>
           </div>
-          <p class="text-red-500 text-sm mt-2"><i class="fas fa-arrow-down mr-1"></i> 3% menos que el mes pasado</p>
         </div>
-        
         <div class="bg-white rounded-lg shadow p-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-500">Empleados</p>
-              <h3 class="text-2xl font-bold">12</h3>
+              <h3 class="text-2xl font-bold">{{totalEmpleados}}</h3>
             </div>
             <div class="bg-purple-100 p-3 rounded-full">
               <i class="fas fa-users text-purple-500"></i>
             </div>
           </div>
-          <p class="text-gray-500 text-sm mt-2">Sin cambios</p>
         </div>
       </div>
 
-      <!-- Gráficos y tablas -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2 bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="font-semibold text-lg">Ventas Recientes</h3>
-            <select class="border rounded px-3 py-1 text-sm">
-              <option>Últimos 7 días</option>
-              <option>Últimos 30 días</option>
-              <option>Este mes</option>
-            </select>
-          </div>
-          <div class="h-64">
-            <!-- Aquí iría tu gráfico (usarías Chart.js o similar) -->
-            <div class="flex items-center justify-center h-full bg-gray-100 rounded">
-              <p class="text-gray-500">Gráfico de Ventas</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="font-semibold text-lg mb-6">Pedidos Recientes</h3>
-          <div class="space-y-4">
-            {{#each pedidosRecientes}}
-            <div class="flex items-center justify-between border-b pb-3">
-              <div>
-                <p class="font-medium">Pedido #{{id}}</p>
-                <p class="text-sm text-gray-500">{{fecha}}</p>
-              </div>
-              <span class="px-2 py-1 text-xs rounded-full 
-                {{#if (eq estado 'completado')}}bg-green-100 text-green-800{{/if}}
-                {{#if (eq estado 'pendiente')}}bg-yellow-100 text-yellow-800{{/if}}
-                {{#if (eq estado 'cancelado')}}bg-red-100 text-red-800{{/if}}">
-                {{estado}}
-              </span>
-            </div>
-            {{/each}}
-          </div>
-          <a href="/admin/orders" class="block text-center mt-4 text-[var(--accent)] hover:underline">Ver todos</a>
+      <!-- Selector de rango de días para ingresos -->
+      <div class="flex items-center gap-4 mb-4">
+        <label for="dias" class="font-semibold">Ver ingresos de:</label>
+        <select id="dias" class="border rounded px-2 py-1">
+          <option value="7" {{#if (eq diasSeleccionados 7)}}selected{{/if}}>Últimos 7 días</option>
+          <option value="30" {{#if (eq diasSeleccionados 30)}}selected{{/if}}>Últimos 30 días</option>
+        </select>
+      </div>
 
+      <!-- Gráficos y tablas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="font-semibold text-lg mb-4">Productos más vendidos</h3>
+          <canvas id="ventasPie" width="400" height="300"></canvas>
         </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="font-semibold text-lg mb-4">Ingresos últimos {{diasSeleccionados}} días</h3>
+          <canvas id="ingresosBar" width="400" height="300"></canvas>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 mt-8">
+        <h3 class="font-semibold text-lg mb-6">Pedidos Recientes</h3>
+        <div class="space-y-4">
+          {{#each pedidosRecientes}}
+          <div class="flex items-center justify-between border-b pb-3">
+            <div>
+              <p class="font-medium">Pedido #{{id}}</p>
+              <p class="text-sm text-gray-500">{{fecha}}</p>
+            </div>
+            <span class="px-2 py-1 text-xs rounded-full 
+              {{#if (eq estado 'completado')}}bg-green-100 text-green-800{{/if}}
+              {{#if (eq estado 'pendiente')}}bg-yellow-100 text-yellow-800{{/if}}
+              {{#if (eq estado 'cancelado')}}bg-red-100 text-red-800{{/if}}">
+              {{estado}}
+            </span>
+          </div>
+          {{/each}}
+        </div>
+        <a href="/admin/orders" class="block text-center mt-4 text-[var(--accent)] hover:underline">Ver todos</a>
       </div>
     </main>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Gráfico de torta: productos más vendidos
+  const ctxPie = document.getElementById('ventasPie').getContext('2d');
+  new Chart(ctxPie, {
+    type: 'pie',
+    data: {
+      labels: {{json ventasPorProducto.[].nombre}},
+      datasets: [{
+        data: {{json ventasPorProducto.[].cantidad}},
+        backgroundColor: ['#FFD700', '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+      }]
+    }
+  });
+
+  // Gráfico de barras: ingresos últimos X días
+  const ctxBar = document.getElementById('ingresosBar').getContext('2d');
+  new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+      labels: {{json ingresosPorDia.[].fecha}},
+      datasets: [{
+        label: 'Ingresos (Bs)',
+        data: {{json ingresosPorDia.[].total}},
+        backgroundColor: '#FFD700'
+      }]
+    }
+  });
+
+  // Selector de días
+  document.getElementById('dias').addEventListener('change', function() {
+    window.location.search = '?dias=' + this.value;
+  });
+</script>

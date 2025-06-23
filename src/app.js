@@ -37,14 +37,6 @@ app.use(session({
 app.use(flash());
 
 // Conexión a MySQL
-/*app.use(myconnection(mysql, {
-    host: 'sql10.freesqldatabase.com',
-    user: 'sql10783953',
-    password: '7G9s5gXqU1',
-    port: 3306,
-    database: 'sql10783953'
-}, 'single'));*/
-
 app.use(myconnection(mysql, {
     host: '127.0.0.1',
     user: 'root',
@@ -67,16 +59,7 @@ app.use('/images/products', express.static(path.join(__dirname, 'public/image/pr
 
 // Archivos estáticos generales (CSS, JS, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
-// ...existing code...
 
-app.use((req, res, next) => {
-  res.locals.nombre = req.session.nombre || null;
-  res.locals.user = req.session.user || null;
-  res.locals.isAdmin = req.session.isAdmin || false;
-  next();
-});
-
-// ...rutas...
 
 
 // Motor de vistas con Handlebars y helpers
@@ -94,6 +77,9 @@ app.engine('.hbs', engine({
           for (let i = 0; i < n; ++i)
             accum += block.fn(i);
           return accum;
+        },
+        json: function(context) {
+            return JSON.stringify(context);
         },
         // Helper ifCond para condicionales avanzados
         ifCond: function (v1, operator, v2, options) {
@@ -142,9 +128,18 @@ app.engine('.hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Middleware para pasar datos de sesión a todas las vistas (agrega esto después de la configuración de sesión y antes de las rutas)
+app.use((req, res, next) => {
+  res.locals.nombre = req.session.nombre || null;
+  res.locals.user = req.session.user || null;
+  res.locals.isAdmin = req.session.isAdmin || false;
+  next();
+});
 // Rutas públicas y protegidas
 app.use('/', authRoutes);
 app.use('/admin/employees', isLoggedIn, isAdmin, employeeRoutes);
+app.use('/admin/products', isLoggedIn, isAdmin, productRoutes);
+app.use('/admin/orders', isLoggedIn, isAdmin, adminRoutes);
 app.use('/admin/products', isLoggedIn, isAdmin, productRoutes);
 app.use('/admin', adminRoutes);
 app.use('/productos', clientProductRoutes);

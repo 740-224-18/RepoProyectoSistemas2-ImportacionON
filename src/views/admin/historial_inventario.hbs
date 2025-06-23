@@ -1,0 +1,32 @@
+{{!< ../layouts/main}}
+<div class="max-w-6xl mx-auto p-8">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Historial de Inventario</h2>
+  <table class="min-w-full bg-white border border-gray-200">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Movimiento</th>
+        <th>Cantidad</th>
+        <th>Stock Anterior</th>
+        <th>Stock Nuevo</th>
+        <th>Empleado</th>
+        <th>Referencia</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each historial}}
+      <tr>
+        <td>{{fecha_movimiento}}</td>
+        <td>{{producto}}</td>
+        <td>{{movimiento}}</td>
+        <td>{{cantidad}}</td>
+        <td>{{stock_anterior}}</td>
+        <td>{{stock_nuevo}}</td>
+        <td>{{empleado}}</td>
+        <td>{{referencia_tipo}} #{{referencia_id}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
